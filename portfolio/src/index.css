@@ -1,0 +1,86 @@
+:root {
+  --font-main: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+
+  /* === Fixed colors – NEVER inverted === */
+  --color-black: #000000;
+  --color-white: #ffffff;
+  --color-accent: #FFC107;
+  --color-card-bg: #000000;
+  /* black cards stay black */
+
+  /* === Semantic tokens (light mode defaults) === */
+  --color-bg: #ffffff;
+  /* page / section background */
+  --color-surface: #f8f8f8;
+  /* card / panel surface */
+  --color-border: #ebebeb;
+  /* borders */
+  --color-text: #000000;
+  /* primary text */
+  --color-text-body: #4a4a4a;
+  /* body paragraph text */
+  --color-text-muted: #666666;
+  /* muted / secondary text */
+  --color-text-light: #e0e0e0;
+  /* text on dark cards */
+  --color-gray: #666666;
+  --container-width: 1200px;
+}
+
+/* ═══════════════════════════════════════
+   DARK MODE – only semantic tokens change
+   --color-black / --color-white / --color-accent / --color-card-bg
+   stay the same so existing black-card designs keep working
+   ═══════════════════════════════════════ */
+[data-theme="dark"] {
+  --color-bg: #0d1117;
+  /* deep dark navy - GitHub-style */
+  --color-surface: #161b22;
+  /* rich dark navy surface */
+  --color-border: #30363d;
+  /* muted slate border */
+  --color-text: #e6edf3;
+  /* crisp off-white */
+  --color-text-body: #b0bec5;
+  /* cool blue-grey body text */
+  --color-text-muted: #8b949e;
+  /* muted slate */
+  --color-text-light: #e6edf3;
+  --color-gray: #8b949e;
+  /* Dark-mode accent glow (used for toggles, hovers etc.) */
+  --color-accent-dark: #FFC107;
+  --color-toggle-border: #58a6ff;
+  /* bright blue border for toggle */
+  --color-toggle-icon: #58a6ff;
+  /* bright blue icon */
+  --color-toggle-hover-bg: #1f6feb;
+  /* vivid blue hover */
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+}

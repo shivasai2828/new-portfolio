@@ -1,0 +1,187 @@
+.navbar {
+    background-color: var(--color-bg);
+    padding: 1.5rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.navbar-container {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-logo a {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-text);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+}
+
+.navbar-logo-img {
+    height: 40px;
+    /* Adjust height as needed */
+    width: auto;
+    object-fit: contain;
+    border-radius: 50%;
+    /* Optional: circular logo if preferred */
+}
+
+.navbar-links ul {
+    display: flex;
+    gap: 2rem;
+    /* Ensure appropriate gap with smaller font */
+    list-style: none;
+}
+
+.navbar-links a {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--color-text);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    padding-bottom: 5px;
+    transition: all 0.3s ease;
+}
+
+.navbar-links a:hover,
+.navbar-links a.active {
+    color: var(--color-gray);
+    /* Often active links in this theme might be grey or just underline */
+    border-bottom-color: var(--color-gray);
+    /* Underline */
+    text-decoration-color: var(--color-gray);
+    /* Or use text-decoration-line: underline; text-underline-offset: 8px; */
+    text-decoration: underline;
+    text-underline-offset: 10px;
+    text-decoration-thickness: 2px;
+    border-bottom: none;
+    /* Switch to text-decoration as per screenshot typically */
+}
+
+.navbar-toggle {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    gap: 5px;
+}
+
+.bar {
+    width: 25px;
+    height: 3px;
+    background-color: var(--color-text);
+    transition: all 0.3s ease;
+}
+
+/* ── Navbar right-side actions (toggle + hamburger) ── */
+.navbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* Dark / Light mode toggle button */
+.theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1.5px solid var(--color-black);
+    background: transparent;
+    color: var(--color-black);
+    cursor: pointer;
+    transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.theme-toggle:hover {
+    background: var(--color-black);
+    color: var(--color-white);
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+}
+
+/* ── Dark mode: make toggle clearly visible ── */
+[data-theme="dark"] .theme-toggle {
+    border-color: var(--color-toggle-border, #58a6ff);
+    color: var(--color-toggle-icon, #58a6ff);
+    background: rgba(88, 166, 255, 0.08);
+    box-shadow: 0 0 0 1px rgba(88, 166, 255, 0.2);
+}
+
+[data-theme="dark"] .theme-toggle:hover {
+    background: var(--color-toggle-hover-bg, #1f6feb);
+    color: #ffffff;
+    border-color: var(--color-toggle-hover-bg, #1f6feb);
+    box-shadow: 0 4px 16px rgba(31, 111, 235, 0.45);
+    transform: scale(1.1);
+}
+
+.theme-toggle-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.theme-toggle-icon.rotate-in {
+    transform: rotate(30deg);
+}
+
+
+@media (max-width: 768px) {
+    .navbar-toggle {
+        display: flex;
+    }
+
+    .navbar-links {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        width: 100%;
+        background-color: var(--color-bg);
+        flex-direction: column;
+        align-items: center;
+        padding: 2rem 0;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transform: translateY(-150%);
+        transition: transform 0.3s ease-in-out;
+        z-index: 999;
+    }
+
+    .navbar-links.active {
+        transform: translateY(0);
+    }
+
+    .navbar-links ul {
+        flex-direction: column;
+        gap: 1.5rem;
+        align-items: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-container {
+        padding: 0 1rem;
+    }
+
+    .navbar-logo a {
+        font-size: 1.2rem;
+    }
+}
+
+/* ── Dark mode nav link accent ── */
+[data-theme="dark"] .navbar-links a:hover,
+[data-theme="dark"] .navbar-links a.active {
+    color: #58a6ff;
+    text-decoration-color: #58a6ff;
+}
