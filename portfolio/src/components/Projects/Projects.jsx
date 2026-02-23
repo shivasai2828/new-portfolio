@@ -1,0 +1,253 @@
+import React, { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import "./Projects.css";
+import whatzcrn from "../../assets/whatzcrn.png";
+import rhino from "../../assets/rhnoagents.png";
+import pgimage from "../../assets/pg-image.jpg";
+
+gsap.registerPlugin(ScrollTrigger);
+
+const Projects = () => {
+  const sectionRef = useRef(null);
+  const gridRef = useRef(null);
+  const [selectedProject, setSelectedProject] = useState(null);
+
+  const projects = [
+    {
+      id: 1,
+      title: "WhatzCRM Multi-Tenant Platform",
+      image: whatzcrn,
+      demoLink: "https://www.whatzcrm.com",
+      repoLink: "#",
+      technologies: ["React", "Node.js", "MongoDB", "Socket.IO", "Express", "Tailwind CSS"],
+      description: "A comprehensive multi-tenant CRM solution tailored for businesses to manage their WhatsApp communications efficiently. It offers powerful automation, real-time analytics, and role-based access control, allowing multiple departments or clients to operate within isolated environments securely.",
+    },
+    {
+      id: 2,
+      title: "Rhino Agents Automation",
+      image: rhino,
+      demoLink: "https://www.rhinoagents.com",
+      repoLink: "#",
+      technologies: ["React", "Automations", "Node.js", "Python", "OpenAI API"],
+      description: "An advanced automation platform designed to streamline repetitive workflows. Using cutting-edge web technologies, it allows users to build intelligent agents that handle tedious administrative tasks, freeing up valuable time for more strategic initiatives.",
+    },
+    {
+      id: 3,
+      title: "Hostel Management System",
+      image: pgimage,
+      demoLink: "#",
+      repoLink: "#",
+      technologies: ["Node.js", "Express", "MongoDB", "React", "JWT", "Redux"],
+      description: "A robust backend system built to manage daily operations of hostels and paying guest accommodations. Features include tenant onboarding, automated rent collection tracking, room allocation, and maintenance request logging, entirely powered by a scalable Node.js architecture.",
+    },
+    {
+      id: 4,
+      title: "Doctor Appointment",
+      image:
+        "https://res.cloudinary.com/dhsz1cq0y/image/upload/v1735022724/Screenshot_217_kqjkvi.png",
+      demoLink: "https://doctor-appointment-zeta.vercel.app/",
+      repoLink: "https://github.com/shivasai2828",
+      technologies: ["React.js", "Node.js", "Express.js", "MongoDB", "Socket.IO", "Tailwind CSS"],
+      description: "A full-stack healthcare application enabling seamless appointment booking between patients and doctors. Patients can filter doctors by specialty, check real-time availability, and safely manage their medical history, all within an intuitive and responsive interface.",
+    },
+    {
+      id: 5,
+      title: "JOBBY APP",
+      image:
+        "https://res.cloudinary.com/dhsz1cq0y/image/upload/v1720418308/JOBBY-APP-IMG_peos85.png",
+      demoLink: "https://shivasaipr22.ccbp.tech/login",
+      repoLink: "https://github.com/shivasai2828",
+      technologies: ["React", "Flexbox", "Grid", "React Router", "Context API", "REST APIs"],
+      description: "A dynamic job portal application that bridges the gap between job seekers and employers. Built with modern React features, it includes advanced search filtering, user authentication, and responsive employment listings with detailed salary and location metrics.",
+    },
+    {
+      id: 6,
+      title: "NXT TRENDS",
+      image:
+        "https://res.cloudinary.com/dhsz1cq0y/image/upload/v1720418308/NXT-TRENDS-IMG_jqibix.png",
+      //   demoLink: "https://shivasaipr22.ccbp.tech/login",
+      repoLink: "https://github.com/shivasai2828",
+      technologies: ["React", "Flexbox", "Grid", "React Router", "Redux", "JWT"],
+      description: "An e-commerce clothing store simulation showcasing a premium shopping experience. Featuring product sorting, dynamic cart management, protected routes, and sleek CSS grid layouts to deliver an authentic retail environment.",
+    },
+    {
+      id: 7,
+      title: "NXT WATCH",
+      image:
+        "https://res.cloudinary.com/dhsz1cq0y/image/upload/v1720418308/NXT-WACTH-IMG_dylayf.png",
+      //   demoLink: "https://shivasaipr22.ccbp.tech/login",
+      repoLink: "https://github.com/shivasai2828/Nxt-Watch-Mini-Project.git",
+      technologies: ["React", "Flexbox", "Grid", "React Player", "Context API", "React Icons"],
+      description: "A video streaming platform clone featuring categorical filtering, saved videos, and search functionality. It includes a custom light and dark theme implementation, delivering a versatile and engaging media consumption interface.",
+    },
+    {
+      id: 8,
+      title: "Rock-Paper-Scissors",
+      image:
+        "https://res.cloudinary.com/dhsz1cq0y/image/upload/v1720418308/ROCK-PAPER_p70f69.png",
+      //   demoLink: "https://shivasaipr22.ccbp.tech/login",
+      repoLink: "https://github.com/shivasai2828/Rock-Paper-Scissors.git",
+      technologies: ["React", "Flexbox", "Grid", "CSS Animations", "State Management"],
+      description: "An interactive mini-game built to demonstrate state management and component lifecycle in React. It features persistent high-score tracking, smooth animations during game resolution, and an addictive replay loop.",
+    },
+    {
+      id: 9,
+      title: "Wikipedia Search Application",
+      image:
+        "https://res.cloudinary.com/dhsz1cq0y/image/upload/v1720418308/WIKI-IMG_cbi5e3.png",
+      demoLink: "https://shivasaiwikipr1.ccbp.tech/",
+      repoLink: "https://github.com/shivasai2828/",
+      technologies: ["HTML5", "CSS3", "JS", "Fetch API", "Async/Await", "DOM"],
+      description: "A fast, responsive search engine interface that directly hooks into the Wikipedia API. It processes asynchronous data fetching, manages search query debouncing, and dynamically renders formatted knowledge cards for instant information retrieval.",
+    },
+    {
+      id: 10,
+      title: "Todo Application",
+      image:
+        "https://res.cloudinary.com/dhsz1cq0y/image/upload/v1720418308/TODO-APP-IMG_dterc8.png",
+      demoLink: "https://shivasailudo.ccbp.tech/",
+      repoLink: "https://github.com/shivasai2828/",
+      technologies: ["HTML5", "CSS3", "JS", "Local Storage", "DOM Manipulation"],
+      description: "A robust task management tool utilizing vanilla JS to manipulate the DOM and localStorage for data persistence. Users can rapidly add, strike-through, and comprehensively manage daily tasks in a clean, distraction-free UI.",
+    },
+  ];
+
+  useEffect(() => {
+    let ctx = gsap.context(() => {
+      const section = sectionRef.current;
+      const grid = gridRef.current;
+
+      const getScrollAmount = () => {
+        let gridWidth = grid.scrollWidth;
+        // Subtract window width, but add a buffer to account for padding/margins
+        return -(gridWidth - window.innerWidth + 64);
+      };
+
+      const tween = gsap.to(grid, {
+        x: getScrollAmount,
+        ease: "none"
+      });
+
+      ScrollTrigger.create({
+        trigger: section,
+        start: "top top",
+        end: () => `+=${getScrollAmount() * -1}`,
+        pin: true,
+        animation: tween,
+        scrub: 1,
+        invalidateOnRefresh: true,
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, [projects]);
+
+  return (
+    <section id="projects" className="projects-section" ref={sectionRef}>
+      <div className="projects-container">
+        <p className="section-subtitle">Browse My Recent</p>
+        <h2 className="section-title">Projects</h2>
+
+        <div className="projects-grid" ref={gridRef}>
+          {projects.map((project) => (
+            <div key={project.id} className="project-card">
+              <div className="project-image-container">
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  className="project-image"
+                />
+              </div>
+              <div className="project-content">
+                <h3 className="project-title">{project.title}</h3>
+                <div className="project-tags">
+                  {project.technologies.map((tech, idx) => (
+                    <span key={idx} className="project-tag">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+                <div className="project-footer">
+                  <div className="project-buttons-row">
+                    {project.demoLink !== "#" && (
+                      <button
+                        className="btn-view"
+                        onClick={() => window.open(project.demoLink, "_blank")}
+                      >
+                        Live Demo
+                      </button>
+                    )}
+                    {project.repoLink !== "#" && (
+                      <button
+                        className="btn-view"
+                        onClick={() => window.open(project.repoLink, "_blank")}
+                      >
+                        GitHub
+                      </button>
+                    )}
+                  </div>
+                  <button
+                    className="btn-details"
+                    onClick={() => setSelectedProject(project)}
+                  >
+                    Read in Details
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {selectedProject && createPortal(
+        <div className="project-modal-overlay" onClick={() => setSelectedProject(null)}>
+          <div className="project-modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close-btn" onClick={() => setSelectedProject(null)}>
+              &times;
+            </button>
+            <div className="modal-header">
+              <img src={selectedProject.image} alt={selectedProject.title} className="modal-image" />
+            </div>
+            <div className="modal-body">
+              <h2 className="modal-title">{selectedProject.title}</h2>
+              <div className="modal-tags">
+                {selectedProject.technologies.map((tech, idx) => (
+                  <span key={idx} className="project-tag">
+                    {tech}
+                  </span>
+                ))}
+              </div>
+              <div className="modal-description">
+                <h3>About this Project</h3>
+                <p>{selectedProject.description}</p>
+              </div>
+              <div className="modal-actions">
+                {selectedProject.demoLink !== "#" && (
+                  <button
+                    className="btn-modal-action btn-primary"
+                    onClick={() => window.open(selectedProject.demoLink, "_blank")}
+                  >
+                    View Live
+                  </button>
+                )}
+                {selectedProject.repoLink !== "#" && (
+                  <button
+                    className="btn-modal-action btn-secondary"
+                    onClick={() => window.open(selectedProject.repoLink, "_blank")}
+                  >
+                    Source Code
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
+    </section>
+  );
+};
+
+export default Projects;

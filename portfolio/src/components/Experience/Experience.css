@@ -1,0 +1,217 @@
+.experience-section {
+    padding: 4rem 2rem;
+    background-color: var(--color-bg);
+    text-align: center;
+}
+
+.experience-container {
+    max-width: var(--container-width);
+    margin: 0 auto;
+}
+
+/* Timeline */
+.timeline {
+    position: relative;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* Vertical Line */
+.timeline::after {
+    content: '';
+    position: absolute;
+    width: 4px;
+    /* Thicker line as per design */
+    background-color: var(--color-black);
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    margin-left: -2px;
+    z-index: 1;
+}
+
+.timeline-item {
+    padding: 10px 40px;
+    position: relative;
+    width: 50%;
+    box-sizing: border-box;
+}
+
+/* Left Item */
+.timeline-item.left {
+    left: 0;
+    text-align: left;
+}
+
+/* Right Item */
+.timeline-item.right {
+    left: 50%;
+    text-align: left;
+    /* Content inside card is left aligned */
+}
+
+/* Marker (Logo) */
+.timeline-marker {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    right: -25px;
+    background-color: var(--color-black);
+    /* Circle default */
+    border: 4px solid var(--color-white);
+    /* Gap from line */
+    top: 25px;
+    /* Adjust based on card height */
+    border-radius: 50%;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--color-white);
+    font-weight: bold;
+}
+
+.timeline-item.right .timeline-marker {
+    left: -25px;
+}
+
+/* Content Card */
+.timeline-content {
+    padding: 2rem;
+    background-color: var(--color-card-bg);
+    /* Black card */
+    color: var(--color-white);
+    position: relative;
+    border-radius: 10px;
+    text-align: left;
+    border: 1px solid transparent;
+    /* Prevent layout shift */
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.timeline-content:hover {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    border-color: var(--color-text);
+}
+
+/* Arrows */
+.timeline-content::after {
+    content: " ";
+    position: absolute;
+    top: 35px;
+    border-style: solid;
+    transition: border-color 0.3s ease;
+}
+
+.timeline-item.left .timeline-content::after {
+    right: -10px;
+    border-width: 10px 0 10px 10px;
+    border-color: transparent transparent transparent var(--color-card-bg);
+}
+
+.timeline-item.left .timeline-content:hover::after {
+    border-left-color: var(--color-bg);
+}
+
+/* Right arrows */
+.timeline-item.right .timeline-content::after {
+    left: -10px;
+    border-width: 10px 10px 10px 0;
+    border-color: transparent var(--color-card-bg) transparent transparent;
+}
+
+.timeline-item.right .timeline-content:hover::after {
+    border-right-color: var(--color-bg);
+}
+
+
+.company-name {
+    color: var(--color-accent);
+    /* Yellow */
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.timeline-content:hover .company-name {
+    color: var(--color-text);
+}
+
+.role-title {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    transition: color 0.3s ease;
+}
+
+.timeline-content:hover .role-title {
+    color: var(--color-text);
+}
+
+.experience-date {
+    font-size: 0.9rem;
+    color: var(--color-text-light);
+    display: block;
+    transition: color 0.3s ease;
+}
+
+.timeline-content:hover .experience-date {
+    color: var(--color-gray);
+}
+
+/* Responsive updates for arrows */
+@media (max-width: 768px) {
+    /* ... existing styles ... */
+    /* We need to override the hover arrow direction for mobile if it changes sides */
+    /* In mobile, everything might align left. */
+    /* Existing responsive rule:
+     .timeline-item.left .timeline-content::after, 
+     .timeline-item.right .timeline-content::after {
+       right: auto;
+       left: -10px;
+       border-width: 10px 10px 10px 0;
+       border-color: transparent var(--color-card-bg) transparent transparent;
+     }
+  */
+    /* We need to ensure hover respects this override */
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .timeline::after {
+        left: 31px;
+    }
+
+    .timeline-item {
+        width: 100%;
+        padding-left: 70px;
+        padding-right: 25px;
+    }
+
+    .timeline-item.left,
+    .timeline-item.right {
+        left: 0;
+    }
+
+    /* Reset arrows for mobile (all left aligned mostly) but we want them pointing left to the line */
+    .timeline-item.left .timeline-content::after,
+    .timeline-item.right .timeline-content::after {
+        right: auto;
+        left: -10px;
+        border-width: 10px 10px 10px 0;
+        border-color: transparent var(--color-card-bg) transparent transparent;
+    }
+
+    .timeline-marker {
+        left: 6px;
+        /* Position line is at 31px, marker center needs to align */
+        right: auto;
+    }
+
+    .timeline-item.right .timeline-marker {
+        left: 6px;
+    }
+}
