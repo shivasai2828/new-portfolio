@@ -51,7 +51,7 @@ const Contact = () => {
         setStatus('loading');
 
         try {
-            const response = await fetch('http://localhost:5001/api/contact', {
+            const response = await fetch('https://new-portfolio-6cin.onrender.com/api/contact', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
