@@ -19,6 +19,7 @@ const Skills = () => {
     const skillsData = [
         {
             category: "Frontend",
+            titleIcon: "💻",
             subtitle: "Building responsive and animated interfaces",
             skills: [
                 { name: "React.js", icon: "⚛️" },
@@ -33,6 +34,7 @@ const Skills = () => {
         },
         {
             category: "Backend",
+            titleIcon: "⚙️",
             subtitle: "Architecting scalable and secure APIs",
             skills: [
                 { name: "Node.js", icon: "🟢" },
@@ -44,6 +46,7 @@ const Skills = () => {
         },
         {
             category: "Realtime",
+            titleIcon: "⚡",
             subtitle: "Connecting users with instant responses",
             skills: [
                 { name: "Socket.IO", icon: "⚡" },
@@ -52,6 +55,7 @@ const Skills = () => {
         },
         {
             category: "Database",
+            titleIcon: "🗄️",
             subtitle: "Managing and optimizing large datasets",
             skills: [
                 { name: "MongoDB", icon: "🍃" },
@@ -60,6 +64,7 @@ const Skills = () => {
         },
         {
             category: "Other Skills",
+            titleIcon: "🛠️",
             subtitle: "Tooling, performance, and best practices",
             skills: [
                 { name: "GitHub", icon: "🐙" },
@@ -113,19 +118,33 @@ const Skills = () => {
 
                 <div className="skills-layout">
                     {skillsData.map((group, index) => (
-                        <div key={index} className="skill-category-card" ref={addToRefs}>
-                            <div className="skill-line"></div>
+                        <div key={index} className="skill-category-group" ref={addToRefs}>
                             <div className="skill-category-header">
-                                <h3 className="skill-category-title">{group.category}</h3>
+                                <div className="skill-line"></div>
+                                <h3 className="skill-category-title">{group.titleIcon} {group.category}</h3>
                                 <p className="skill-category-subtitle">{group.subtitle}</p>
                             </div>
-                            <div className="skills-grid">
-                                {group.skills.map((skill, idx) => (
-                                    <div key={idx} className="skill-tag">
-                                        <span className="skill-icon">{skill.icon}</span>
-                                        <span className="skill-name">{skill.name}</span>
+                            <div className="skill-category-card">
+                                <div className="skills-marquee-container">
+                                    <div className={`skills-marquee ${index % 2 === 0 ? 'marquee-left' : 'marquee-right'}`}>
+                                        <div className="marquee-content">
+                                            {group.skills.map((skill, idx) => (
+                                                <div key={`col1-${idx}`} className="skill-tag">
+                                                    <span className="skill-icon">{skill.icon}</span>
+                                                    <span className="skill-name">{skill.name}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                        <div className="marquee-content">
+                                            {group.skills.map((skill, idx) => (
+                                                <div key={`col2-${idx}`} className="skill-tag">
+                                                    <span className="skill-icon">{skill.icon}</span>
+                                                    <span className="skill-name">{skill.name}</span>
+                                                </div>
+                                            ))}
+                                        </div>
                                     </div>
-                                ))}
+                                </div>
                             </div>
                         </div>
                     ))}
