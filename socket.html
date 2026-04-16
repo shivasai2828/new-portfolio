@@ -1,0 +1,1778 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Socket.io Mastery</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Unbounded:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0a0a0f;
+        --surface: #111118;
+        --surface2: #1a1a25;
+        --border: #2a2a3a;
+        --accent: #00e5ff;
+        --accent2: #7c3aed;
+        --accent3: #10b981;
+        --warn: #f59e0b;
+        --text: #e2e8f0;
+        --text2: #94a3b8;
+        --code-bg: #0d0d16;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "DM Sans", sans-serif;
+        display: flex;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      /* SIDEBAR */
+      #sidebar {
+        width: 280px;
+        min-width: 280px;
+        background: var(--surface);
+        border-right: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      #sidebar-header {
+        padding: 20px 18px 16px;
+        border-bottom: 1px solid var(--border);
+      }
+      #sidebar-header h1 {
+        font-family: "Unbounded", sans-serif;
+        font-size: 13px;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        color: var(--accent);
+        text-transform: uppercase;
+      }
+      #sidebar-header p {
+        font-size: 11px;
+        color: var(--text2);
+        margin-top: 4px;
+      }
+      #topic-list {
+        overflow-y: auto;
+        flex: 1;
+        padding: 8px 0;
+      }
+      .topic-item {
+        padding: 10px 18px;
+        cursor: pointer;
+        font-size: 12.5px;
+        color: var(--text2);
+        border-left: 3px solid transparent;
+        transition: all 0.15s;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .topic-item:hover {
+        background: var(--surface2);
+        color: var(--text);
+      }
+      .topic-item.active {
+        border-left-color: var(--accent);
+        background: var(--surface2);
+        color: var(--accent);
+        font-weight: 600;
+      }
+      .topic-num {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        color: var(--border);
+        min-width: 20px;
+      }
+      .topic-item.active .topic-num {
+        color: var(--accent2);
+      }
+
+      /* MAIN */
+      #main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      #topbar {
+        padding: 14px 28px;
+        border-bottom: 1px solid var(--border);
+        background: var(--surface);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      #topbar h2 {
+        font-family: "Unbounded", sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+      }
+      .badge {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        padding: 3px 10px;
+        border-radius: 20px;
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        color: var(--text2);
+      }
+
+      #content-area {
+        flex: 1;
+        overflow-y: auto;
+        display: flex;
+        gap: 0;
+      }
+
+      /* LESSON PANEL */
+      #lesson-panel {
+        flex: 1;
+        padding: 28px;
+        overflow-y: auto;
+        max-width: 680px;
+      }
+      #lesson-panel h3 {
+        font-family: "Unbounded", sans-serif;
+        font-size: 17px;
+        margin-bottom: 16px;
+        color: var(--accent);
+      }
+      #lesson-panel h4 {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--warn);
+        margin: 20px 0 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      #lesson-panel p {
+        font-size: 13.5px;
+        line-height: 1.8;
+        color: var(--text2);
+        margin-bottom: 12px;
+      }
+      #lesson-panel ul {
+        padding-left: 18px;
+        margin-bottom: 12px;
+      }
+      #lesson-panel li {
+        font-size: 13px;
+        line-height: 1.8;
+        color: var(--text2);
+        margin-bottom: 4px;
+      }
+      #lesson-panel strong {
+        color: var(--text);
+      }
+
+      .concept-box {
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-left: 3px solid var(--accent2);
+        border-radius: 6px;
+        padding: 14px 16px;
+        margin: 14px 0;
+        font-size: 13px;
+        line-height: 1.7;
+        color: var(--text);
+      }
+      .warn-box {
+        background: #1a1200;
+        border: 1px solid #3a2a00;
+        border-left: 3px solid var(--warn);
+        border-radius: 6px;
+        padding: 14px 16px;
+        margin: 14px 0;
+        font-size: 13px;
+        line-height: 1.7;
+        color: #fcd34d;
+      }
+      .success-box {
+        background: #001a10;
+        border: 1px solid #003020;
+        border-left: 3px solid var(--accent3);
+        border-radius: 6px;
+        padding: 14px 16px;
+        margin: 14px 0;
+        font-size: 13px;
+        line-height: 1.7;
+        color: #6ee7b7;
+      }
+
+      /* CODE BLOCK */
+      .code-block {
+        background: var(--code-bg);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        margin: 14px 0;
+        overflow: hidden;
+      }
+      .code-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 14px;
+        border-bottom: 1px solid var(--border);
+        background: #0f0f1a;
+      }
+      .code-header span {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        color: var(--text2);
+      }
+      .copy-btn {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        padding: 3px 10px;
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        color: var(--text2);
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+      .copy-btn:hover {
+        background: var(--accent);
+        color: #000;
+        border-color: var(--accent);
+      }
+      .code-block pre {
+        padding: 16px;
+        overflow-x: auto;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12.5px;
+        line-height: 1.75;
+        color: #cdd9f5;
+      }
+
+      /* Syntax coloring via spans */
+      .kw {
+        color: #c792ea;
+      }
+      .str {
+        color: #c3e88d;
+      }
+      .fn {
+        color: #82aaff;
+      }
+      .cm {
+        color: #546e7a;
+        font-style: italic;
+      }
+      .num {
+        color: #f78c6c;
+      }
+      .ev {
+        color: #00e5ff;
+      }
+      .obj {
+        color: #ffcb6b;
+      }
+
+      /* RIGHT PANEL - PLAYGROUND */
+      #playground {
+        width: 420px;
+        min-width: 420px;
+        border-left: 1px solid var(--border);
+        background: var(--surface);
+        display: flex;
+        flex-direction: column;
+      }
+      #playground-header {
+        padding: 14px 18px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      #playground-header h3 {
+        font-family: "Unbounded", sans-serif;
+        font-size: 12px;
+        color: var(--accent3);
+      }
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+      }
+      .dot.green {
+        background: var(--accent3);
+        box-shadow: 0 0 8px var(--accent3);
+      }
+      .dot.red {
+        background: #ef4444;
+      }
+      .dot.yellow {
+        background: var(--warn);
+      }
+
+      #sim-area {
+        flex: 1;
+        overflow-y: auto;
+        padding: 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .sim-card {
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      .sim-card-header {
+        padding: 8px 12px;
+        background: #0f0f1a;
+        border-bottom: 1px solid var(--border);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .sim-card-header .label {
+        color: var(--text2);
+      }
+      .sim-card-body {
+        padding: 12px;
+      }
+
+      #event-log {
+        background: var(--code-bg);
+        border-radius: 6px;
+        padding: 10px;
+        min-height: 100px;
+        max-height: 140px;
+        overflow-y: auto;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        line-height: 1.7;
+      }
+      .log-entry {
+        margin-bottom: 3px;
+      }
+      .log-entry.emit {
+        color: #82aaff;
+      }
+      .log-entry.receive {
+        color: #c3e88d;
+      }
+      .log-entry.connect {
+        color: var(--accent3);
+      }
+      .log-entry.disconnect {
+        color: #ef4444;
+      }
+      .log-entry.info {
+        color: var(--text2);
+      }
+
+      .sim-input {
+        width: 100%;
+        background: var(--code-bg);
+        border: 1px solid var(--border);
+        border-radius: 5px;
+        padding: 8px 10px;
+        color: var(--text);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+        outline: none;
+      }
+      .sim-input:focus {
+        border-color: var(--accent);
+      }
+      .sim-btns {
+        display: flex;
+        gap: 6px;
+        margin-top: 8px;
+        flex-wrap: wrap;
+      }
+      .sim-btn {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        padding: 6px 12px;
+        border-radius: 5px;
+        border: 1px solid;
+        cursor: pointer;
+        transition: all 0.15s;
+        font-weight: 600;
+      }
+      .sim-btn.primary {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #000;
+      }
+      .sim-btn.primary:hover {
+        background: #00b8cc;
+      }
+      .sim-btn.secondary {
+        background: transparent;
+        border-color: var(--accent2);
+        color: var(--accent2);
+      }
+      .sim-btn.secondary:hover {
+        background: var(--accent2);
+        color: #fff;
+      }
+      .sim-btn.danger {
+        background: transparent;
+        border-color: #ef4444;
+        color: #ef4444;
+      }
+      .sim-btn.danger:hover {
+        background: #ef4444;
+        color: #fff;
+      }
+      .sim-btn.success {
+        background: transparent;
+        border-color: var(--accent3);
+        color: var(--accent3);
+      }
+      .sim-btn.success:hover {
+        background: var(--accent3);
+        color: #000;
+      }
+
+      .status-indicator {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+      }
+      .status-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        transition: all 0.3s;
+      }
+
+      .room-display {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        margin-top: 6px;
+      }
+      .room-tag {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        padding: 3px 8px;
+        border-radius: 3px;
+        border: 1px solid var(--accent2);
+        color: var(--accent2);
+        background: #1a0a2e;
+      }
+
+      .client-list {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .client-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: var(--code-bg);
+        border-radius: 4px;
+        padding: 5px 8px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+      }
+      .client-id {
+        color: var(--accent);
+      }
+      .client-rooms {
+        color: var(--text2);
+        font-size: 10px;
+      }
+
+      /* NAV BUTTONS */
+      #nav-row {
+        padding: 12px 18px;
+        border-top: 1px solid var(--border);
+        display: flex;
+        gap: 8px;
+      }
+      .nav-btn {
+        flex: 1;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        padding: 8px;
+        border-radius: 5px;
+        border: 1px solid var(--border);
+        background: var(--surface2);
+        color: var(--text2);
+        cursor: pointer;
+        transition: all 0.15s;
+        text-align: center;
+      }
+      .nav-btn:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+
+      /* PROGRESS */
+      #progress-bar-wrap {
+        padding: 10px 18px;
+        border-top: 1px solid var(--border);
+      }
+      .progress-track {
+        background: var(--surface2);
+        border-radius: 10px;
+        height: 3px;
+        overflow: hidden;
+      }
+      .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--accent2), var(--accent));
+        transition: width 0.4s;
+        border-radius: 10px;
+      }
+      #progress-text {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        color: var(--text2);
+        margin-top: 5px;
+      }
+
+      /* scrollbar */
+      ::-webkit-scrollbar {
+        width: 4px;
+        height: 4px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- SIDEBAR -->
+    <div id="sidebar">
+      <div id="sidebar-header">
+        <h1>⚡ Socket.io</h1>
+        <p>Interactive Mastery Course</p>
+      </div>
+      <div id="topic-list" id="topic-list"></div>
+      <div id="progress-bar-wrap">
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+        </div>
+        <div id="progress-text">0 / 10 topics</div>
+      </div>
+    </div>
+
+    <!-- MAIN -->
+    <div id="main">
+      <div id="topbar">
+        <h2 id="topic-title">Welcome to Socket.io</h2>
+        <span class="badge" id="topic-badge">Topic 1/10</span>
+      </div>
+      <div id="content-area">
+        <div id="lesson-panel"></div>
+        <div id="playground">
+          <div id="playground-header">
+            <div class="dot yellow"></div>
+            <div class="dot red"></div>
+            <div class="dot green" id="conn-dot"></div>
+            <h3>Live Playground</h3>
+          </div>
+          <div id="sim-area"></div>
+          <div id="nav-row">
+            <button class="nav-btn" onclick="prevTopic()">← Prev</button>
+            <button class="nav-btn" onclick="nextTopic()">Next →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // ─── DATA ───────────────────────────────────────────────────────────
+      const topics = [
+        {
+          title: "What is Socket.io?",
+          lesson: `
+    <h3>What is Socket.io?</h3>
+    <p>Socket.io is a JavaScript library that enables <strong>real-time, bidirectional, event-driven communication</strong> between the browser (client) and a Node.js server.</p>
+    <div class="concept-box">
+      💡 Think of it like a phone call — both sides can talk and listen at any time. Unlike HTTP, which is like sending letters (request → wait → response).
+    </div>
+    <h4>Why Socket.io over plain WebSockets?</h4>
+    <ul>
+      <li>Auto-reconnection when connection drops</li>
+      <li>Fallback to HTTP long-polling if WebSockets aren't available</li>
+      <li>Room & namespace support built-in</li>
+      <li>Broadcasting to multiple clients easily</li>
+      <li>Works across all browsers reliably</li>
+    </ul>
+    <h4>How it works</h4>
+    <p>Socket.io uses <strong>WebSockets</strong> as its primary transport. A persistent connection is opened and both sides can push data to each other instantly.</p>
+    <div class="code-block">
+      <div class="code-header"><span>server.js (Node.js)</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre><span class="cm">// 1. Install: npm install socket.io express</span>
+<span class="kw">const</span> <span class="obj">express</span> = <span class="fn">require</span>(<span class="str">'express'</span>)
+<span class="kw">const</span> { <span class="obj">createServer</span> } = <span class="fn">require</span>(<span class="str">'http'</span>)
+<span class="kw">const</span> { <span class="obj">Server</span> } = <span class="fn">require</span>(<span class="str">'socket.io'</span>)
+
+<span class="kw">const</span> <span class="obj">app</span> = <span class="fn">express</span>()
+<span class="kw">const</span> <span class="obj">httpServer</span> = <span class="fn">createServer</span>(<span class="obj">app</span>)
+<span class="kw">const</span> <span class="obj">io</span> = <span class="kw">new</span> <span class="fn">Server</span>(<span class="obj">httpServer</span>)
+
+<span class="obj">io</span>.<span class="fn">on</span>(<span class="str">'connection'</span>, (<span class="obj">socket</span>) => {
+  <span class="obj">console</span>.<span class="fn">log</span>(<span class="str">'Client connected:'</span>, <span class="obj">socket</span>.id)
+})
+
+<span class="obj">httpServer</span>.<span class="fn">listen</span>(<span class="num">3000</span>)</pre>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span>client.html (Browser)</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre><span class="cm">&lt;!-- 2. Include Socket.io client --&gt;</span>
+&lt;script src=<span class="str">"/socket.io/socket.io.js"</span>&gt;&lt;/script&gt;
+&lt;script&gt;
+  <span class="kw">const</span> <span class="obj">socket</span> = <span class="fn">io</span>() <span class="cm">// connects to same server</span>
+  
+  <span class="obj">socket</span>.<span class="fn">on</span>(<span class="str">'connect'</span>, () => {
+    <span class="obj">console</span>.<span class="fn">log</span>(<span class="str">'Connected! ID:'</span>, <span class="obj">socket</span>.id)
+  })
+&lt;/script&gt;</pre>
+    </div>
+    <div class="success-box">✅ That's all it takes to establish a real-time connection! The playground on the right simulates this.</div>
+  `,
+          playground: "connection",
+        },
+        {
+          title: "Emitting Events",
+          lesson: `
+    <h3>Emitting Events</h3>
+    <p>The core of Socket.io is <strong>events</strong>. You can emit (send) any named event with any data — strings, objects, arrays.</p>
+    <h4>Client → Server</h4>
+    <div class="code-block">
+      <div class="code-header"><span>client.js</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre><span class="cm">// Send a message event with a string</span>
+<span class="obj">socket</span>.<span class="fn">emit</span>(<span class="str">'message'</span>, <span class="str">'Hello server!'</span>)
+
+<span class="cm">// Send with an object</span>
+<span class="obj">socket</span>.<span class="fn">emit</span>(<span class="str">'chat'</span>, {
+  user: <span class="str">'Alice'</span>,
+  text: <span class="str">'Hi everyone!'</span>,
+  timestamp: <span class="obj">Date</span>.<span class="fn">now</span>()
+})
+
+<span class="cm">// Send multiple arguments</span>
+<span class="obj">socket</span>.<span class="fn">emit</span>(<span class="str">'move'</span>, <span class="num">100</span>, <span class="num">200</span>) <span class="cm">// x, y coords</span></pre>
+    </div>
+    <h4>Server → Client</h4>
+    <div class="code-block">
+      <div class="code-header"><span>server.js</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre><span class="obj">io</span>.<span class="fn">on</span>(<span class="str">'connection'</span>, (<span class="obj">socket</span>) => {
+  
+  <span class="cm">// Listen for 'message' event from client</span>
+  <span class="obj">socket</span>.<span class="fn">on</span>(<span class="str">'message'</span>, (<span class="obj">data</span>) => {
+    <span class="obj">console</span>.<span class="fn">log</span>(<span class="str">'Received:'</span>, <span class="obj">data</span>)
+  })
+
+  <span class="cm">// Send event BACK to that specific client</span>
+  <span class="obj">socket</span>.<span class="fn">emit</span>(<span class="str">'welcome'</span>, {
+    msg: <span class="str">'Connected successfully!'</span>,
+    id: <span class="obj">socket</span>.id
+  })
+})</pre>
+    </div>
+    <div class="concept-box">
+      💡 <strong>Event names</strong> can be anything you want — 'message', 'user:join', 'game:move', 'order:update'. Use a naming convention like <code>namespace:action</code> for clarity.
+    </div>
+    <h4>Acknowledgements (Callbacks)</h4>
+    <div class="code-block">
+      <div class="code-header"><span>client.js — with callback</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre><span class="cm">// Client sends and waits for server confirmation</span>
+<span class="obj">socket</span>.<span class="fn">emit</span>(<span class="str">'save-data'</span>, { name: <span class="str">'Alice'</span> }, (<span class="obj">response</span>) => {
+  <span class="cm">// This runs when server calls the callback</span>
+  <span class="obj">console</span>.<span class="fn">log</span>(<span class="str">'Server said:'</span>, <span class="obj">response</span>.status) <span class="cm">// 'ok'</span>
+})
+
+<span class="cm">// Server side:</span>
+<span class="obj">socket</span>.<span class="fn">on</span>(<span class="str">'save-data'</span>, (<span class="obj">data</span>, <span class="obj">callback</span>) => {
+  <span class="cm">// ... save to DB ...</span>
+  <span class="fn">callback</span>({ status: <span class="str">'ok'</span>, id: <span class="num">42</span> })
+})</pre>
+    </div>
+  `,
+          playground: "emit",
+        },
+        {
+          title: "Listening to Events",
+          lesson: `
+    <h3>Listening to Events</h3>
+    <p>Use <code>.on()</code> to listen, <code>.once()</code> to listen only once, and <code>.off()</code> to stop listening.</p>
+    <div class="code-block">
+      <div class="code-header"><span>client.js</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre><span class="cm">// Listen continuously</span>
+<span class="obj">socket</span>.<span class="fn">on</span>(<span class="str">'message'</span>, (<span class="obj">data</span>) => {
+  <span class="obj">console</span>.<span class="fn">log</span>(<span class="str">'New message:'</span>, <span class="obj">data</span>)
+})
+
+<span class="cm">// Listen only ONCE (auto-removes after first trigger)</span>
+<span class="obj">socket</span>.<span class="fn">once</span>(<span class="str">'welcome'</span>, (<span class="obj">data</span>) => {
+  <span class="obj">console</span>.<span class="fn">log</span>(<span class="str">'Welcome message:'</span>, <span class="obj">data</span>)
+})
+
+<span class="cm">// Remove a specific listener</span>
+<span class="kw">const</span> <span class="fn">handler</span> = (<span class="obj">data</span>) => <span class="obj">console</span>.<span class="fn">log</span>(<span class="obj">data</span>)
+<span class="obj">socket</span>.<span class="fn">on</span>(<span class="str">'message'</span>, <span class="fn">handler</span>)
+<span class="obj">socket</span>.<span class="fn">off</span>(<span class="str">'message'</span>, <span class="fn">handler</span>) <span class="cm">// removes it</span>
+
+<span class="cm">// Remove ALL listeners for an event</span>
+<span class="obj">socket</span>.<span class="fn">removeAllListeners</span>(<span class="str">'message'</span>)</pre>
+    </div>
+    <h4>Built-in System Events</h4>
+    <div class="code-block">
+      <div class="code-header"><span>client.js — system events</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre><span class="cm">// Connection established</span>
+<span class="obj">socket</span>.<span class="fn">on</span>(<span class="str">'connect'</span>, () => {
+  <span class="obj">console</span>.<span class="fn">log</span>(<span class="str">'Connected! ID:'</span>, <span class="obj">socket</span>.id)
+})
+
+<span class="cm">// Disconnected from server</span>
+<span class="obj">socket</span>.<span class="fn">on</span>(<span class="str">'disconnect'</span>, (<span class="obj">reason</span>) => {
+  <span class="obj">console</span>.<span class="fn">log</span>(<span class="str">'Disconnected:'</span>, <span class="obj">reason</span>)
+  <span class="cm">// reasons: 'io server disconnect', 'transport close', etc.</span>
+})
+
+<span class="cm">// Connection error</span>
+<span class="obj">socket</span>.<span class="fn">on</span>(<span class="str">'connect_error'</span>, (<span class="obj">err</span>) => {
+  <span class="obj">console</span>.<span class="fn">log</span>(<span class="str">'Error:'</span>, <span class="obj">err</span>.message)
+})
+
+<span class="cm">// Reconnecting attempts</span>
+<span class="obj">socket</span>.<span class="fn">io</span>.<span class="fn">on</span>(<span class="str">'reconnect_attempt'</span>, (<span class="obj">n</span>) => {
+  <span class="obj">console</span>.<span class="fn">log</span>(<span class="str">'Reconnect attempt'</span>, <span class="obj">n</span>)
+})</pre>
+    </div>
+    <div class="warn-box">⚠️ Always clean up listeners when a component unmounts (React) or page unloads, or you'll get memory leaks!</div>
+    <h4>Server-side system events</h4>
+    <div class="code-block">
+      <div class="code-header"><span>server.js</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre><span class="obj">io</span>.<span class="fn">on</span>(<span class="str">'connection'</span>, (<span class="obj">socket</span>) => {
+  <span class="obj">console</span>.<span class="fn">log</span>(<span class="str">'Connected:'</span>, <span class="obj">socket</span>.id)
+
+  <span class="obj">socket</span>.<span class="fn">on</span>(<span class="str">'disconnect'</span>, (<span class="obj">reason</span>) => {
+    <span class="obj">console</span>.<span class="fn">log</span>(<span class="obj">socket</span>.id, <span class="str">'disconnected:'</span>, <span class="obj">reason</span>)
+  })
+
+  <span class="obj">socket</span>.<span class="fn">on</span>(<span class="str">'error'</span>, (<span class="obj">err</span>) => {
+    <span class="obj">console</span>.<span class="fn">log</span>(<span class="str">'Socket error:'</span>, <span class="obj">err</span>)
+  })
+})</pre>
+    </div>
+  `,
+          playground: "listen",
+        },
+        {
+          title: "Broadcasting",
+          lesson: `
+    <h3>Broadcasting</h3>
+    <p>Broadcasting means sending an event to <strong>multiple clients</strong> at once. This is key for real-time apps like chats and games.</p>
+    <h4>The 4 ways to broadcast</h4>
+    <div class="code-block">
+      <div class="code-header"><span>server.js — all broadcast methods</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre><span class="obj">io</span>.<span class="fn">on</span>(<span class="str">'connection'</span>, (<span class="obj">socket</span>) => {
+
+  <span class="cm">// 1️⃣  Send to EVERYONE including sender</span>
+  <span class="obj">io</span>.<span class="fn">emit</span>(<span class="str">'announcement'</span>, <span class="str">'Server restarting soon'</span>)
+
+  <span class="cm">// 2️⃣  Send to EVERYONE except sender</span>
+  <span class="obj">socket</span>.broadcast.<span class="fn">emit</span>(<span class="str">'user-joined'</span>, {
+    id: <span class="obj">socket</span>.id, name: <span class="str">'Alice'</span>
+  })
+
+  <span class="cm">// 3️⃣  Send to specific socket by ID</span>
+  <span class="obj">io</span>.to(<span class="str">'some-socket-id'</span>).<span class="fn">emit</span>(<span class="str">'private'</span>, <span class="str">'Hey!'</span>)
+
+  <span class="cm">// 4️⃣  Send to multiple specific sockets</span>
+  <span class="obj">io</span>.to(<span class="str">'id-1'</span>).to(<span class="str">'id-2'</span>).<span class="fn">emit</span>(<span class="str">'group-msg'</span>, <span class="str">'Hello'</span>)
+
+})</pre>
+    </div>
+    <div class="concept-box">
+      💡 <strong>socket.emit</strong> → only that client<br>
+      <strong>io.emit</strong> → every client<br>
+      <strong>socket.broadcast.emit</strong> → everyone except that client
+    </div>
+    <h4>Real-world example: Chat app</h4>
+    <div class="code-block">
+      <div class="code-header"><span>server.js — chat broadcast</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre><span class="obj">io</span>.<span class="fn">on</span>(<span class="str">'connection'</span>, (<span class="obj">socket</span>) => {
+
+  <span class="obj">socket</span>.<span class="fn">on</span>(<span class="str">'chat-message'</span>, (<span class="obj">msg</span>) => {
+    <span class="cm">// Broadcast to ALL clients (including sender)</span>
+    <span class="cm">// so everyone sees the message</span>
+    <span class="obj">io</span>.<span class="fn">emit</span>(<span class="str">'chat-message'</span>, {
+      id: <span class="obj">socket</span>.id,
+      text: <span class="obj">msg</span>.text,
+      time: <span class="kw">new</span> <span class="obj">Date</span>().<span class="fn">toLocaleTimeString</span>()
+    })
+  })
+
+  <span class="cm">// Notify others when someone joins</span>
+  <span class="obj">socket</span>.broadcast.<span class="fn">emit</span>(<span class="str">'status'</span>, 
+    <span class="str">\`User \${socket.id.slice(0,6)} joined\`</span>
+  )
+})</pre>
+    </div>
+  `,
+          playground: "broadcast",
+        },
+        {
+          title: "Rooms",
+          lesson: `
+    <h3>Rooms</h3>
+    <p>Rooms let you group sockets together. You can send a message to everyone in a room — perfect for chat channels, game lobbies, or group notifications.</p>
+    <div class="concept-box">
+      💡 Imagine a building with multiple conference rooms. Sockets can be in multiple rooms, and you can shout into any room.
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span>server.js — rooms</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre><span class="obj">io</span>.<span class="fn">on</span>(<span class="str">'connection'</span>, (<span class="obj">socket</span>) => {
+
+  <span class="cm">// Join a room</span>
+  <span class="obj">socket</span>.<span class="fn">join</span>(<span class="str">'room-general'</span>)
+  <span class="obj">socket</span>.<span class="fn">join</span>(<span class="str">'room-announcements'</span>)
+  
+  <span class="cm">// A socket can be in multiple rooms</span>
+  <span class="obj">console</span>.<span class="fn">log</span>(<span class="obj">socket</span>.rooms) 
+  <span class="cm">// Set { socket.id, 'room-general', 'room-announcements' }</span>
+
+  <span class="cm">// Leave a room</span>
+  <span class="obj">socket</span>.<span class="fn">leave</span>(<span class="str">'room-general'</span>)
+
+  <span class="cm">// Send to everyone IN a room (including sender if in it)</span>
+  <span class="obj">io</span>.<span class="fn">to</span>(<span class="str">'room-general'</span>).<span class="fn">emit</span>(<span class="str">'message'</span>, <span class="str">'Hello room!'</span>)
+
+  <span class="cm">// Send to room EXCEPT sender</span>
+  <span class="obj">socket</span>.to(<span class="str">'room-general'</span>).<span class="fn">emit</span>(<span class="str">'message'</span>, <span class="str">'New user joined'</span>)
+
+  <span class="cm">// Get all sockets in a room</span>
+  <span class="kw">const</span> <span class="obj">sockets</span> = <span class="kw">await</span> <span class="obj">io</span>.<span class="fn">in</span>(<span class="str">'room-general'</span>).<span class="fn">fetchSockets</span>()
+  <span class="obj">console</span>.<span class="fn">log</span>(<span class="str">'Users in room:'</span>, <span class="obj">sockets</span>.length)
+})</pre>
+    </div>
+    <h4>Dynamic room joining (client-driven)</h4>
+    <div class="code-block">
+      <div class="code-header"><span>server.js — client joins a room by request</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre><span class="obj">socket</span>.<span class="fn">on</span>(<span class="str">'join-room'</span>, (<span class="obj">roomName</span>, <span class="obj">callback</span>) => {
+  <span class="obj">socket</span>.<span class="fn">join</span>(<span class="obj">roomName</span>)
+  
+  <span class="cm">// Tell everyone in the room a new user joined</span>
+  <span class="obj">socket</span>.<span class="fn">to</span>(<span class="obj">roomName</span>).<span class="fn">emit</span>(<span class="str">'user-joined'</span>, socket.id)
+  
+  <span class="cm">// Confirm to the joining client</span>
+  <span class="fn">callback</span>({ success: <span class="kw">true</span>, room: <span class="obj">roomName</span> })
+})
+
+<span class="cm">// Client calls:</span>
+<span class="obj">socket</span>.<span class="fn">emit</span>(<span class="str">'join-room'</span>, <span class="str">'game-lobby-42'</span>, (<span class="obj">res</span>) => {
+  <span class="obj">console</span>.<span class="fn">log</span>(<span class="str">'Joined:'</span>, <span class="obj">res</span>.room)
+})</pre>
+    </div>
+    <div class="warn-box">⚠️ Each socket is automatically in its own room named by its socket.id — you can use this for private messaging!</div>
+  `,
+          playground: "rooms",
+        },
+        {
+          title: "Namespaces",
+          lesson: `
+    <h3>Namespaces</h3>
+    <p>Namespaces are like separate Socket.io channels on the same server. They let you <strong>separate concerns</strong> — e.g., /chat, /admin, /game — on one server instance.</p>
+    <div class="concept-box">
+      💡 Rooms = subgroups within one namespace.<br>
+      Namespaces = completely separate channels on the server.
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span>server.js — namespaces</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre><span class="cm">// Default namespace: '/'</span>
+<span class="obj">io</span>.<span class="fn">on</span>(<span class="str">'connection'</span>, (<span class="obj">socket</span>) => { ... })
+
+<span class="cm">// Custom namespace: '/chat'</span>
+<span class="kw">const</span> <span class="obj">chatNS</span> = <span class="obj">io</span>.<span class="fn">of</span>(<span class="str">'/chat'</span>)
+<span class="obj">chatNS</span>.<span class="fn">on</span>(<span class="str">'connection'</span>, (<span class="obj">socket</span>) => {
+  <span class="obj">console</span>.<span class="fn">log</span>(<span class="str">'Chat user:'</span>, <span class="obj">socket</span>.id)
+  <span class="obj">socket</span>.<span class="fn">emit</span>(<span class="str">'welcome'</span>, <span class="str">'Welcome to chat!'</span>)
+})
+
+<span class="cm">// Admin-only namespace with middleware auth</span>
+<span class="kw">const</span> <span class="obj">adminNS</span> = <span class="obj">io</span>.<span class="fn">of</span>(<span class="str">'/admin'</span>)
+<span class="obj">adminNS</span>.<span class="fn">use</span>((<span class="obj">socket</span>, <span class="obj">next</span>) => {
+  <span class="kw">const</span> <span class="obj">token</span> = <span class="obj">socket</span>.handshake.auth.token
+  <span class="kw">if</span> (<span class="obj">token</span> === <span class="str">'secret'</span>) <span class="fn">next</span>()
+  <span class="kw">else</span> <span class="fn">next</span>(<span class="kw">new</span> <span class="fn">Error</span>(<span class="str">'Unauthorized'</span>))
+})
+<span class="obj">adminNS</span>.<span class="fn">on</span>(<span class="str">'connection'</span>, (<span class="obj">socket</span>) => {
+  <span class="obj">socket</span>.<span class="fn">emit</span>(<span class="str">'admin-data'</span>, { users: <span class="num">142</span> })
+})</pre>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span>client.js — connecting to namespaces</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre><span class="cm">// Connect to specific namespace</span>
+<span class="kw">const</span> <span class="obj">chatSocket</span> = <span class="fn">io</span>(<span class="str">'/chat'</span>)
+<span class="kw">const</span> <span class="obj">adminSocket</span> = <span class="fn">io</span>(<span class="str">'/admin'</span>, {
+  auth: { token: <span class="str">'secret'</span> }
+})
+
+<span class="obj">chatSocket</span>.<span class="fn">on</span>(<span class="str">'welcome'</span>, <span class="obj">msg</span> => <span class="obj">console</span>.<span class="fn">log</span>(<span class="obj">msg</span>))
+<span class="obj">adminSocket</span>.<span class="fn">on</span>(<span class="str">'admin-data'</span>, <span class="obj">data</span> => <span class="obj">console</span>.<span class="fn">log</span>(<span class="obj">data</span>))</pre>
+    </div>
+    <h4>When to use Namespaces vs Rooms</h4>
+    <ul>
+      <li><strong>Namespaces</strong>: Different features (chat, notifications, game) or auth levels</li>
+      <li><strong>Rooms</strong>: Grouping users within the same feature (channels, lobbies)</li>
+    </ul>
+  `,
+          playground: "namespaces",
+        },
+        {
+          title: "Middleware",
+          lesson: `
+    <h3>Middleware</h3>
+    <p>Socket.io middleware runs before a socket connects. Use it for <strong>authentication, logging, rate limiting</strong>, or modifying the socket object.</p>
+    <div class="code-block">
+      <div class="code-header"><span>server.js — auth middleware</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre><span class="cm">// Middleware runs for EVERY connection attempt</span>
+<span class="obj">io</span>.<span class="fn">use</span>((<span class="obj">socket</span>, <span class="obj">next</span>) => {
+  <span class="kw">const</span> <span class="obj">token</span> = <span class="obj">socket</span>.handshake.auth.token
+
+  <span class="kw">if</span> (!<span class="obj">token</span>) {
+    <span class="kw">return</span> <span class="fn">next</span>(<span class="kw">new</span> <span class="fn">Error</span>(<span class="str">'No token provided'</span>))
+  }
+
+  <span class="kw">try</span> {
+    <span class="cm">// Verify JWT or session token</span>
+    <span class="kw">const</span> <span class="obj">user</span> = <span class="fn">verifyToken</span>(<span class="obj">token</span>)
+    <span class="obj">socket</span>.data.user = <span class="obj">user</span> <span class="cm">// attach to socket</span>
+    <span class="fn">next</span>() <span class="cm">// allow connection</span>
+  } <span class="kw">catch</span> (<span class="obj">err</span>) {
+    <span class="fn">next</span>(<span class="kw">new</span> <span class="fn">Error</span>(<span class="str">'Invalid token'</span>))
+  }
+})
+
+<span class="obj">io</span>.<span class="fn">on</span>(<span class="str">'connection'</span>, (<span class="obj">socket</span>) => {
+  <span class="cm">// socket.data.user is available here</span>
+  <span class="obj">console</span>.<span class="fn">log</span>(<span class="str">'User:'</span>, <span class="obj">socket</span>.data.user.name)
+})</pre>
+    </div>
+    <h4>Multiple middleware</h4>
+    <div class="code-block">
+      <div class="code-header"><span>server.js — chaining middleware</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre><span class="cm">// Logger middleware</span>
+<span class="obj">io</span>.<span class="fn">use</span>((<span class="obj">socket</span>, <span class="obj">next</span>) => {
+  <span class="obj">console</span>.<span class="fn">log</span>(<span class="str">\`[LOG] Connection from \${socket.handshake.address}\`</span>)
+  <span class="fn">next</span>()
+})
+
+<span class="cm">// Rate limiter middleware</span>
+<span class="kw">const</span> <span class="obj">connectCount</span> = {}
+<span class="obj">io</span>.<span class="fn">use</span>((<span class="obj">socket</span>, <span class="obj">next</span>) => {
+  <span class="kw">const</span> <span class="obj">ip</span> = <span class="obj">socket</span>.handshake.address
+  <span class="obj">connectCount</span>[<span class="obj">ip</span>] = (<span class="obj">connectCount</span>[<span class="obj">ip</span>] || <span class="num">0</span>) + <span class="num">1</span>
+  <span class="kw">if</span> (<span class="obj">connectCount</span>[<span class="obj">ip</span>] > <span class="num">10</span>) {
+    <span class="kw">return</span> <span class="fn">next</span>(<span class="kw">new</span> <span class="fn">Error</span>(<span class="str">'Rate limit exceeded'</span>))
+  }
+  <span class="fn">next</span>()
+})</pre>
+    </div>
+    <h4>Client handles auth errors</h4>
+    <div class="code-block">
+      <div class="code-header"><span>client.js</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre><span class="kw">const</span> <span class="obj">socket</span> = <span class="fn">io</span>({ auth: { token: <span class="str">'my-jwt-token'</span> } })
+
+<span class="obj">socket</span>.<span class="fn">on</span>(<span class="str">'connect_error'</span>, (<span class="obj">err</span>) => {
+  <span class="obj">console</span>.<span class="fn">log</span>(<span class="str">'Auth error:'</span>, <span class="obj">err</span>.message)
+  <span class="cm">// 'No token provided' or 'Invalid token'</span>
+})</pre>
+    </div>
+  `,
+          playground: "middleware",
+        },
+        {
+          title: "Volatile & Compressed Events",
+          lesson: `
+    <h3>Volatile & Compressed Events</h3>
+    <p>Socket.io has special modifiers for fine-grained control over how messages are sent.</p>
+    <h4>Volatile Events</h4>
+    <p>Volatile events are <strong>dropped if the client is not connected</strong> or the connection is busy. Great for non-critical real-time data like cursor positions or live metrics.</p>
+    <div class="code-block">
+      <div class="code-header"><span>server.js — volatile</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre><span class="cm">// If client isn't ready, this event is DROPPED (no retry)</span>
+<span class="obj">io</span>.volatile.<span class="fn">emit</span>(<span class="str">'cursor-position'</span>, { x: <span class="num">120</span>, y: <span class="num">340</span> })
+
+<span class="cm">// Good use case: streaming game state 60fps</span>
+<span class="fn">setInterval</span>(() => {
+  <span class="obj">io</span>.volatile.<span class="fn">emit</span>(<span class="str">'game-state'</span>, <span class="fn">getGameState</span>())
+}, <span class="num">16</span>) <span class="cm">// ~60fps, old frames don't matter</span></pre>
+    </div>
+    <h4>Compression Control</h4>
+    <div class="code-block">
+      <div class="code-header"><span>server.js — compression</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre><span class="cm">// Enable compression (default: true)</span>
+<span class="kw">const</span> <span class="obj">io</span> = <span class="kw">new</span> <span class="fn">Server</span>(<span class="obj">httpServer</span>, {
+  perMessageDeflate: {
+    threshold: <span class="num">1024</span>, <span class="cm">// only compress if > 1kb</span>
+  }
+})
+
+<span class="cm">// Disable per-emit (for small/already-compressed data)</span>
+<span class="obj">socket</span>.compress(<span class="kw">false</span>).<span class="fn">emit</span>(<span class="str">'tiny-event'</span>, <span class="str">'x'</span>)</pre>
+    </div>
+    <h4>Timeout on emit</h4>
+    <div class="code-block">
+      <div class="code-header"><span>client.js — timeout</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre><span class="cm">// Emit with a timeout — reject if no ack in 2s</span>
+<span class="kw">try</span> {
+  <span class="kw">const</span> <span class="obj">result</span> = <span class="kw">await</span> <span class="obj">socket</span>
+    .<span class="fn">timeout</span>(<span class="num">2000</span>)
+    .<span class="fn">emitWithAck</span>(<span class="str">'save-data'</span>, { name: <span class="str">'Alice'</span> })
+  <span class="obj">console</span>.<span class="fn">log</span>(<span class="str">'Saved!'</span>, <span class="obj">result</span>)
+} <span class="kw">catch</span> (<span class="obj">err</span>) {
+  <span class="obj">console</span>.<span class="fn">log</span>(<span class="str">'Timed out!'</span>, <span class="obj">err</span>.message)
+}</pre>
+    </div>
+    <div class="concept-box">
+      💡 <code>emitWithAck</code> is the Promise-based version of emit with callback — much cleaner with async/await!
+    </div>
+  `,
+          playground: "volatile",
+        },
+        {
+          title: "Scaling with Redis",
+          lesson: `
+    <h3>Scaling with Redis Adapter</h3>
+    <p>By default Socket.io only works on a <strong>single server instance</strong>. To scale horizontally (multiple servers), you need the Redis adapter.</p>
+    <div class="warn-box">⚠️ Without an adapter, if Client A is on Server 1 and Client B is on Server 2, they can't receive each other's messages!</div>
+    <div class="code-block">
+      <div class="code-header"><span>server.js — Redis adapter</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre><span class="cm">// npm install @socket.io/redis-adapter ioredis</span>
+<span class="kw">const</span> { <span class="obj">createAdapter</span> } = <span class="fn">require</span>(<span class="str">'@socket.io/redis-adapter'</span>)
+<span class="kw">const</span> { <span class="obj">createClient</span> } = <span class="fn">require</span>(<span class="str">'ioredis'</span>)
+
+<span class="kw">const</span> <span class="obj">pubClient</span> = <span class="fn">createClient</span>({ host: <span class="str">'localhost'</span>, port: <span class="num">6379</span> })
+<span class="kw">const</span> <span class="obj">subClient</span> = <span class="obj">pubClient</span>.<span class="fn">duplicate</span>()
+
+<span class="kw">await</span> <span class="obj">Promise</span>.<span class="fn">all</span>([<span class="obj">pubClient</span>.<span class="fn">connect</span>(), <span class="obj">subClient</span>.<span class="fn">connect</span>()])
+
+<span class="obj">io</span>.<span class="fn">adapter</span>(<span class="fn">createAdapter</span>(<span class="obj">pubClient</span>, <span class="obj">subClient</span>))
+
+<span class="cm">// Now io.emit() works across ALL server instances!</span>
+<span class="obj">io</span>.<span class="fn">emit</span>(<span class="str">'news'</span>, { title: <span class="str">'New feature!'</span> })</pre>
+    </div>
+    <h4>How Redis adapter works</h4>
+    <ul>
+      <li>Each server subscribes to Redis pub/sub channels</li>
+      <li>When you call <code>io.emit()</code>, the message goes to Redis</li>
+      <li>Redis broadcasts it to all subscribed servers</li>
+      <li>Each server forwards it to its connected clients</li>
+    </ul>
+    <div class="code-block">
+      <div class="code-header"><span>Architecture diagram</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre><span class="cm">Client A ──► Server 1 ──► Redis ──► Server 2 ──► Client B
+                    └──────────────────────────► Client C</span></pre>
+    </div>
+    <h4>Other adapters available</h4>
+    <ul>
+      <li><code>@socket.io/mongo-adapter</code> — MongoDB</li>
+      <li><code>@socket.io/postgres-adapter</code> — PostgreSQL</li>
+      <li><code>@socket.io/cluster-adapter</code> — Node.js cluster</li>
+    </ul>
+  `,
+          playground: "scaling",
+        },
+        {
+          title: "Full Chat App",
+          lesson: `
+    <h3>Full Chat App Example</h3>
+    <p>Let's put it all together with a complete, production-ready chat application using everything we've learned.</p>
+    <div class="code-block">
+      <div class="code-header"><span>server.js — complete chat server</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre><span class="kw">const</span> { <span class="obj">Server</span> } = <span class="fn">require</span>(<span class="str">'socket.io'</span>)
+<span class="kw">const</span> <span class="obj">io</span> = <span class="kw">new</span> <span class="fn">Server</span>(<span class="obj">httpServer</span>)
+
+<span class="cm">// In-memory store (use DB in production)</span>
+<span class="kw">const</span> <span class="obj">users</span> = <span class="kw">new</span> <span class="obj">Map</span>()
+<span class="kw">const</span> <span class="obj">history</span> = []
+
+<span class="cm">// Auth middleware</span>
+<span class="obj">io</span>.<span class="fn">use</span>((<span class="obj">socket</span>, <span class="obj">next</span>) => {
+  <span class="kw">const</span> <span class="obj">name</span> = <span class="obj">socket</span>.handshake.auth.username
+  <span class="kw">if</span> (!<span class="obj">name</span>) <span class="kw">return</span> <span class="fn">next</span>(<span class="kw">new</span> <span class="fn">Error</span>(<span class="str">'No username'</span>))
+  <span class="obj">socket</span>.data.username = <span class="obj">name</span>
+  <span class="fn">next</span>()
+})
+
+<span class="obj">io</span>.<span class="fn">on</span>(<span class="str">'connection'</span>, (<span class="obj">socket</span>) => {
+  <span class="kw">const</span> <span class="obj">name</span> = <span class="obj">socket</span>.data.username
+  <span class="obj">users</span>.<span class="fn">set</span>(<span class="obj">socket</span>.id, <span class="obj">name</span>)
+  
+  <span class="cm">// Send chat history to new user</span>
+  <span class="obj">socket</span>.<span class="fn">emit</span>(<span class="str">'history'</span>, <span class="obj">history</span>)
+  
+  <span class="cm">// Notify others</span>
+  <span class="obj">socket</span>.broadcast.<span class="fn">emit</span>(<span class="str">'user-joined'</span>, { name })
+  
+  <span class="cm">// Send updated user list to everyone</span>
+  <span class="obj">io</span>.<span class="fn">emit</span>(<span class="str">'user-list'</span>, [...<span class="obj">users</span>.<span class="fn">values</span>()])
+
+  <span class="obj">socket</span>.<span class="fn">on</span>(<span class="str">'message'</span>, (<span class="obj">text</span>, <span class="obj">cb</span>) => {
+    <span class="kw">const</span> <span class="obj">msg</span> = { <span class="obj">name</span>, <span class="obj">text</span>, time: <span class="kw">new</span> <span class="obj">Date</span>().<span class="fn">toISOString</span>() }
+    <span class="obj">history</span>.<span class="fn">push</span>(<span class="obj">msg</span>)
+    <span class="kw">if</span> (<span class="obj">history</span>.length > <span class="num">100</span>) <span class="obj">history</span>.<span class="fn">shift</span>() <span class="cm">// keep last 100</span>
+    <span class="obj">io</span>.<span class="fn">emit</span>(<span class="str">'message'</span>, <span class="obj">msg</span>) <span class="cm">// broadcast to all</span>
+    <span class="fn">cb</span>({ delivered: <span class="kw">true</span> }) <span class="cm">// ack sender</span>
+  })
+
+  <span class="obj">socket</span>.<span class="fn">on</span>(<span class="str">'typing'</span>, () => {
+    <span class="obj">socket</span>.broadcast.<span class="fn">emit</span>(<span class="str">'typing'</span>, { name })
+  })
+
+  <span class="obj">socket</span>.<span class="fn">on</span>(<span class="str">'disconnect'</span>, () => {
+    <span class="obj">users</span>.<span class="fn">delete</span>(<span class="obj">socket</span>.id)
+    <span class="obj">io</span>.<span class="fn">emit</span>(<span class="str">'user-left'</span>, { name })
+    <span class="obj">io</span>.<span class="fn">emit</span>(<span class="str">'user-list'</span>, [...<span class="obj">users</span>.<span class="fn">values</span>()])
+  })
+})</pre>
+    </div>
+    <div class="success-box">🎉 You now know everything needed to build real-time apps! The playground simulates a full multi-client chat experience.</div>
+    <h4>What to build next?</h4>
+    <ul>
+      <li>🎮 Multiplayer game with room-based lobbies</li>
+      <li>📊 Real-time dashboard with live metrics</li>
+      <li>🖊️ Collaborative document editor (like Google Docs)</li>
+      <li>📍 Live location tracker</li>
+      <li>🔔 Push notification system</li>
+    </ul>
+  `,
+          playground: "chat",
+        },
+      ];
+
+      // ─── STATE ──────────────────────────────────────────────────────────
+      let currentTopic = 0;
+      let connected = false;
+      let clients = [];
+      let rooms = {};
+      let msgLog = [];
+
+      // ─── RENDER TOPICS ──────────────────────────────────────────────────
+      function renderTopicList() {
+        const list = document.getElementById("topic-list");
+        list.innerHTML = topics
+          .map(
+            (t, i) => `
+    <div class="topic-item ${i === currentTopic ? "active" : ""}" onclick="goTopic(${i})">
+      <span class="topic-num">${String(i + 1).padStart(2, "0")}</span>
+      ${t.title}
+    </div>
+  `,
+          )
+          .join("");
+      }
+
+      function goTopic(i) {
+        currentTopic = i;
+        renderAll();
+      }
+      function prevTopic() {
+        if (currentTopic > 0) {
+          currentTopic--;
+          renderAll();
+        }
+      }
+      function nextTopic() {
+        if (currentTopic < topics.length - 1) {
+          currentTopic++;
+          renderAll();
+        }
+      }
+
+      function renderAll() {
+        renderTopicList();
+        const t = topics[currentTopic];
+        document.getElementById("topic-title").textContent = t.title;
+        document.getElementById("topic-badge").textContent =
+          `Topic ${currentTopic + 1}/${topics.length}`;
+        document.getElementById("lesson-panel").innerHTML = t.lesson;
+        renderPlayground(t.playground);
+        const pct = Math.round(((currentTopic + 1) / topics.length) * 100);
+        document.getElementById("progress-fill").style.width = pct + "%";
+        document.getElementById("progress-text").textContent =
+          `${currentTopic + 1} / ${topics.length} topics`;
+      }
+
+      // ─── COPY CODE ──────────────────────────────────────────────────────
+      function copyCode(btn) {
+        const code = btn.closest(".code-block").querySelector("pre").innerText;
+        navigator.clipboard.writeText(code).then(() => {
+          btn.textContent = "copied!";
+          setTimeout(() => (btn.textContent = "copy"), 1500);
+        });
+      }
+
+      // ─── PLAYGROUND ─────────────────────────────────────────────────────
+      function log(msg, type = "info") {
+        const log = document.getElementById("event-log");
+        if (!log) return;
+        const time = new Date().toLocaleTimeString("en", {
+          hour12: false,
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        });
+        const div = document.createElement("div");
+        div.className = `log-entry ${type}`;
+        div.textContent = `[${time}] ${msg}`;
+        log.appendChild(div);
+        log.scrollTop = log.scrollHeight;
+        if (log.children.length > 60) log.removeChild(log.firstChild);
+      }
+
+      function makeClient(id) {
+        return { id, rooms: new Set([id]), connected: true };
+      }
+
+      function updateConnDot() {
+        const d = document.getElementById("conn-dot");
+        d.style.background = connected ? "var(--accent3)" : "#ef4444";
+        d.style.boxShadow = connected ? "0 0 8px var(--accent3)" : "none";
+      }
+
+      function renderPlayground(type) {
+        const area = document.getElementById("sim-area");
+        connected = false;
+        clients = [];
+        rooms = {};
+        updateConnDot();
+
+        if (type === "connection") {
+          area.innerHTML = `
+      <div class="sim-card">
+        <div class="sim-card-header"><span class="label">🔌 Connection Simulator</span><span id="conn-status-label" style="color:#ef4444">● Disconnected</span></div>
+        <div class="sim-card-body">
+          <div class="sim-btns">
+            <button class="sim-btn primary" onclick="simConnect()">socket.connect()</button>
+            <button class="sim-btn danger" onclick="simDisconnect()">socket.disconnect()</button>
+          </div>
+          <div style="margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text2)">
+            socket.id: <span id="sock-id" style="color:var(--accent)">—</span>
+          </div>
+        </div>
+      </div>
+      <div class="sim-card">
+        <div class="sim-card-header"><span class="label">📋 Event Log</span></div>
+        <div class="sim-card-body"><div id="event-log"></div></div>
+      </div>
+    `;
+        } else if (type === "emit") {
+          area.innerHTML = `
+      <div class="sim-card">
+        <div class="sim-card-header"><span class="label">📤 Emit Simulator</span></div>
+        <div class="sim-card-body">
+          <div style="margin-bottom:6px;font-size:11px;color:var(--text2)">Event name:</div>
+          <input class="sim-input" id="ev-name" value="message" />
+          <div style="margin:6px 0;font-size:11px;color:var(--text2)">Payload (JSON or string):</div>
+          <input class="sim-input" id="ev-data" value='{"text":"Hello!","user":"Alice"}' />
+          <div class="sim-btns">
+            <button class="sim-btn primary" onclick="simEmit()">socket.emit()</button>
+            <button class="sim-btn secondary" onclick="simEmitAck()">emit + ack</button>
+          </div>
+        </div>
+      </div>
+      <div class="sim-card">
+        <div class="sim-card-header"><span class="label">📋 Event Log</span></div>
+        <div class="sim-card-body"><div id="event-log"></div></div>
+      </div>
+    `;
+          setTimeout(() => {
+            log("Connected  socket.id: abc-123", "connect");
+          }, 300);
+        } else if (type === "listen") {
+          area.innerHTML = `
+      <div class="sim-card">
+        <div class="sim-card-header"><span class="label">👂 Listener Simulator</span></div>
+        <div class="sim-card-body">
+          <div style="font-size:11px;color:var(--text2);margin-bottom:8px">Simulate incoming server events:</div>
+          <div class="sim-btns">
+            <button class="sim-btn primary" onclick="simReceive('message','Hello from server!')">on('message')</button>
+            <button class="sim-btn secondary" onclick="simReceive('welcome',{id:'abc-123'})">on('welcome')</button>
+            <button class="sim-btn success" onclick="simReceive('update',{count:42})">on('update')</button>
+            <button class="sim-btn danger" onclick="simSysEvent('disconnect')">disconnect</button>
+          </div>
+        </div>
+      </div>
+      <div class="sim-card">
+        <div class="sim-card-header"><span class="label">📋 Event Log</span></div>
+        <div class="sim-card-body"><div id="event-log"></div></div>
+      </div>
+    `;
+          setTimeout(() => {
+            log('✅ socket.on("message", handler) — registered', "info");
+            log('✅ socket.on("welcome", handler) — registered', "info");
+            log('✅ socket.on("update", handler) — registered', "info");
+          }, 300);
+        } else if (type === "broadcast") {
+          clients = [
+            makeClient("A1b2"),
+            makeClient("C3d4"),
+            makeClient("E5f6"),
+          ];
+          area.innerHTML = `
+      <div class="sim-card">
+        <div class="sim-card-header"><span class="label">📡 Broadcast Simulator</span></div>
+        <div class="sim-card-body">
+          <div style="font-size:11px;color:var(--text2);margin-bottom:6px">3 clients connected. You are <span style="color:var(--accent)">A1b2</span></div>
+          <div class="sim-btns">
+            <button class="sim-btn primary" onclick="simBroadcast('io.emit','all')">io.emit() → all</button>
+            <button class="sim-btn secondary" onclick="simBroadcast('broadcast','others')">broadcast → others</button>
+            <button class="sim-btn success" onclick="simBroadcast('to','specific')">io.to(id) → specific</button>
+          </div>
+        </div>
+      </div>
+      <div class="sim-card">
+        <div class="sim-card-header"><span class="label">📋 Delivery Log</span></div>
+        <div class="sim-card-body"><div id="event-log"></div></div>
+      </div>
+    `;
+        } else if (type === "rooms") {
+          rooms = { general: new Set(), game: new Set() };
+          area.innerHTML = `
+      <div class="sim-card">
+        <div class="sim-card-header"><span class="label">🏠 Rooms Simulator</span></div>
+        <div class="sim-card-body">
+          <div style="font-size:11px;color:var(--text2);margin-bottom:6px">Your socket: <span style="color:var(--accent)">mySocket</span></div>
+          <div style="font-size:11px;color:var(--text2);margin-bottom:6px">Current rooms: <span id="my-rooms">—</span></div>
+          <div class="sim-btns">
+            <button class="sim-btn primary" onclick="simJoinRoom('general')">join('general')</button>
+            <button class="sim-btn primary" onclick="simJoinRoom('game-lobby')">join('game-lobby')</button>
+            <button class="sim-btn danger" onclick="simLeaveRoom('general')">leave('general')</button>
+            <button class="sim-btn secondary" onclick="simEmitToRoom('general')">emit to 'general'</button>
+          </div>
+        </div>
+      </div>
+      <div class="sim-card">
+        <div class="sim-card-header"><span class="label">📋 Room Log</span></div>
+        <div class="sim-card-body"><div id="event-log"></div></div>
+      </div>
+    `;
+          setTimeout(() => {
+            log('Socket "mySocket" connected', "connect");
+          }, 200);
+        } else if (type === "namespaces") {
+          area.innerHTML = `
+      <div class="sim-card">
+        <div class="sim-card-header"><span class="label">🗂️ Namespace Simulator</span></div>
+        <div class="sim-card-body">
+          <div style="font-size:11px;color:var(--text2);margin-bottom:8px">Connect to different namespaces:</div>
+          <div class="sim-btns">
+            <button class="sim-btn primary" onclick="simNamespace('/')">connect('/')</button>
+            <button class="sim-btn secondary" onclick="simNamespace('/chat')">connect('/chat')</button>
+            <button class="sim-btn success" onclick="simNamespace('/game')">connect('/game')</button>
+            <button class="sim-btn danger" onclick="simNamespace('/admin')">connect('/admin')</button>
+          </div>
+          <div style="margin-top:10px;font-size:11px;color:var(--text2)">Active namespaces: <span id="ns-active" style="color:var(--accent)">none</span></div>
+        </div>
+      </div>
+      <div class="sim-card">
+        <div class="sim-card-header"><span class="label">📋 Namespace Log</span></div>
+        <div class="sim-card-body"><div id="event-log"></div></div>
+      </div>
+    `;
+        } else if (type === "middleware") {
+          area.innerHTML = `
+      <div class="sim-card">
+        <div class="sim-card-header"><span class="label">🔐 Middleware Auth Simulator</span></div>
+        <div class="sim-card-body">
+          <div style="font-size:11px;color:var(--text2);margin-bottom:6px">Auth token:</div>
+          <input class="sim-input" id="auth-token" value="valid-token-123" />
+          <div class="sim-btns">
+            <button class="sim-btn primary" onclick="simAuthConnect()">Connect with token</button>
+            <button class="sim-btn danger" onclick="simAuthConnect(true)">Connect (no token)</button>
+          </div>
+        </div>
+      </div>
+      <div class="sim-card">
+        <div class="sim-card-header"><span class="label">📋 Auth Log</span></div>
+        <div class="sim-card-body"><div id="event-log"></div></div>
+      </div>
+    `;
+        } else if (type === "volatile") {
+          area.innerHTML = `
+      <div class="sim-card">
+        <div class="sim-card-header"><span class="label">⚡ Volatile Events</span></div>
+        <div class="sim-card-body">
+          <div style="font-size:11px;color:var(--text2);margin-bottom:8px">Toggle connection state & send:</div>
+          <div class="sim-btns">
+            <button class="sim-btn success" onclick="simToggleReady(true)">Client: READY</button>
+            <button class="sim-btn danger" onclick="simToggleReady(false)">Client: BUSY/OFFLINE</button>
+          </div>
+          <div style="margin-top:8px" class="sim-btns">
+            <button class="sim-btn primary" onclick="simVolatile()">io.volatile.emit()</button>
+            <button class="sim-btn secondary" onclick="simNormal()">io.emit() (normal)</button>
+          </div>
+        </div>
+      </div>
+      <div class="sim-card">
+        <div class="sim-card-header"><span class="label">📋 Delivery Log</span></div>
+        <div class="sim-card-body"><div id="event-log"></div></div>
+      </div>
+    `;
+          setTimeout(() => {
+            log("Client status: READY", "connect");
+          }, 200);
+        } else if (type === "scaling") {
+          area.innerHTML = `
+      <div class="sim-card">
+        <div class="sim-card-header"><span class="label">🗄️ Multi-Server Simulator</span></div>
+        <div class="sim-card-body">
+          <div style="font-size:11px;color:var(--text2);margin-bottom:8px">2 server instances, 2 clients:</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px">
+            <div style="background:var(--code-bg);border-radius:5px;padding:8px;font-family:'JetBrains Mono',monospace;font-size:10px">
+              <div style="color:var(--accent)">Server 1</div>
+              <div style="color:var(--text2)">Client A</div>
+            </div>
+            <div style="background:var(--code-bg);border-radius:5px;padding:8px;font-family:'JetBrains Mono',monospace;font-size:10px">
+              <div style="color:var(--accent2)">Server 2</div>
+              <div style="color:var(--text2)">Client B</div>
+            </div>
+          </div>
+          <div class="sim-btns">
+            <button class="sim-btn primary" onclick="simScaleEmit(false)">No Redis (fails)</button>
+            <button class="sim-btn success" onclick="simScaleEmit(true)">With Redis ✓</button>
+          </div>
+        </div>
+      </div>
+      <div class="sim-card">
+        <div class="sim-card-header"><span class="label">📋 Scale Log</span></div>
+        <div class="sim-card-body"><div id="event-log"></div></div>
+      </div>
+    `;
+        } else if (type === "chat") {
+          let chatHistory = [];
+          let chatUsers = ["Alice", "Bob", "Charlie"];
+          area.innerHTML = `
+      <div class="sim-card">
+        <div class="sim-card-header"><span class="label">💬 Live Chat Simulator</span><span style="color:var(--accent3);font-size:10px">3 users online</span></div>
+        <div class="sim-card-body">
+          <div id="chat-msgs" style="background:var(--code-bg);border-radius:5px;padding:8px;height:110px;overflow-y:auto;font-size:11px;font-family:'JetBrains Mono',monospace;"></div>
+          <div style="display:flex;gap:6px;margin-top:6px">
+            <input class="sim-input" id="chat-input" placeholder="Type a message..." style="flex:1" />
+            <button class="sim-btn primary" onclick="simChatSend()">Send</button>
+          </div>
+          <div class="sim-btns" style="margin-top:6px">
+            <button class="sim-btn secondary" onclick="simBotMsg('Bob')">Bob types</button>
+            <button class="sim-btn success" onclick="simBotMsg('Charlie')">Charlie types</button>
+            <button class="sim-btn danger" onclick="simUserLeave()">User leaves</button>
+          </div>
+        </div>
+      </div>
+      <div class="sim-card">
+        <div class="sim-card-header"><span class="label">📋 Socket Events</span></div>
+        <div class="sim-card-body"><div id="event-log"></div></div>
+      </div>
+    `;
+          // seed
+          setTimeout(() => {
+            addChatMsg("Alice", "Hey everyone! 👋", "system");
+            addChatMsg("Bob", "Hi Alice!", "other");
+            log('io.emit("history", [...]) → sent to new user', "receive");
+            log(
+              'socket.broadcast.emit("user-joined") → sent to others',
+              "emit",
+            );
+          }, 300);
+        }
+      }
+
+      // ─── SIM FUNCTIONS ──────────────────────────────────────────────────
+      function simConnect() {
+        connected = true;
+        updateConnDot();
+        const id = "skt-" + Math.random().toString(36).slice(2, 8);
+        document.getElementById("sock-id").textContent = id;
+        document.getElementById("conn-status-label").textContent =
+          "● Connected";
+        document.getElementById("conn-status-label").style.color =
+          "var(--accent3)";
+        log(`connect fired → socket.id: ${id}`, "connect");
+        log('socket.on("connect") handler called', "info");
+      }
+      function simDisconnect() {
+        connected = false;
+        updateConnDot();
+        document.getElementById("conn-status-label").textContent =
+          "● Disconnected";
+        document.getElementById("conn-status-label").style.color = "#ef4444";
+        document.getElementById("sock-id").textContent = "—";
+        log("disconnect fired → reason: io client disconnect", "disconnect");
+      }
+
+      function simEmit() {
+        const name = document.getElementById("ev-name").value || "message";
+        const raw = document.getElementById("ev-data").value;
+        log(`socket.emit("${name}", ${raw})`, "emit");
+        setTimeout(() => {
+          log(`→ Server received "${name}" event`, "info");
+          log(`→ Server processes: ${raw}`, "info");
+          log(`→ io.emit("${name}-ack", {status:"ok"})`, "receive");
+        }, 250);
+      }
+      function simEmitAck() {
+        const name = document.getElementById("ev-name").value || "message";
+        log(`socket.emit("${name}", data, callback)`, "emit");
+        setTimeout(
+          () =>
+            log(
+              `→ Server received, calling callback({status:"ok",ts:${Date.now()}})`,
+              "info",
+            ),
+          300,
+        );
+        setTimeout(
+          () => log(`✅ Acknowledgement received! status: "ok"`, "receive"),
+          600,
+        );
+      }
+
+      function simReceive(event, data) {
+        const d = typeof data === "object" ? JSON.stringify(data) : `"${data}"`;
+        log(`← Server emitted "${event}" event`, "emit");
+        log(`→ handler called with: ${d}`, "receive");
+      }
+      function simSysEvent(type) {
+        log(`⚡ "${type}" system event fired`, "disconnect");
+        log('socket.on("disconnect", handler) called', "info");
+      }
+
+      function simBroadcast(type, target) {
+        if (type === "io.emit") {
+          log(`io.emit("news", data) → sent to ALL clients`, "emit");
+          log("✅ A1b2 received it", "receive");
+          log("✅ C3d4 received it", "receive");
+          log("✅ E5f6 received it", "receive");
+        } else if (type === "broadcast") {
+          log(
+            `socket.broadcast.emit("user-joined") → all EXCEPT sender`,
+            "emit",
+          );
+          log("✅ C3d4 received it", "receive");
+          log("✅ E5f6 received it", "receive");
+          log("⛔ A1b2 (sender) did NOT receive it", "disconnect");
+        } else {
+          log(`io.to("C3d4").emit("private") → only C3d4`, "emit");
+          log("✅ C3d4 received it", "receive");
+          log("⛔ A1b2 did not receive it", "info");
+          log("⛔ E5f6 did not receive it", "info");
+        }
+      }
+
+      let myRooms = new Set();
+      function simJoinRoom(room) {
+        myRooms.add(room);
+        document.getElementById("my-rooms").textContent =
+          [...myRooms].join(", ") || "—";
+        log(`socket.join("${room}") → added to room`, "connect");
+        log(`socket.rooms = {mySocket, ${[...myRooms].join(", ")}}`, "info");
+      }
+      function simLeaveRoom(room) {
+        myRooms.delete(room);
+        document.getElementById("my-rooms").textContent =
+          [...myRooms].join(", ") || "—";
+        log(`socket.leave("${room}") → removed from room`, "disconnect");
+      }
+      function simEmitToRoom(room) {
+        if (myRooms.has(room)) {
+          log(`io.to("${room}").emit("msg") → sent to all in room`, "emit");
+          log(
+            `→ All ${Math.floor(Math.random() * 4) + 2} sockets in "${room}" received it`,
+            "receive",
+          );
+        } else {
+          log(`⚠️ Not in room "${room}" — join first!`, "disconnect");
+        }
+      }
+
+      let activeNS = new Set();
+      function simNamespace(ns) {
+        if (ns === "/admin") {
+          log(`io("${ns}", {auth:{token:"..."}}) → connecting`, "emit");
+          setTimeout(() => {
+            log(`❌ Middleware rejected: "Unauthorized"`, "disconnect");
+            log(`connect_error fired → "Unauthorized"`, "disconnect");
+          }, 400);
+          return;
+        }
+        activeNS.add(ns);
+        document.getElementById("ns-active").textContent = [...activeNS].join(
+          ", ",
+        );
+        log(`io("${ns}") → connected to namespace`, "connect");
+        log(`socket.on("connect") fired on "${ns}" namespace`, "receive");
+        if (ns === "/chat")
+          log(`← Server: "welcome" event → "Welcome to chat!"`, "receive");
+        if (ns === "/game")
+          log(
+            `← Server: "game-state" event → {players:3,status:"waiting"}`,
+            "receive",
+          );
+      }
+
+      function simAuthConnect(noToken) {
+        const token = noToken
+          ? null
+          : document.getElementById("auth-token").value;
+        log(
+          `io({auth:{token:${token ? `"${token}"` : "undefined"}}}) → connecting`,
+          "emit",
+        );
+        setTimeout(() => {
+          if (!token) {
+            log('❌ Middleware: "No token provided"', "disconnect");
+            log("connect_error fired", "disconnect");
+          } else if (token.includes("invalid")) {
+            log('❌ Middleware: "Invalid token"', "disconnect");
+          } else {
+            log("✅ Middleware passed → socket.data.user set", "connect");
+            log("connection event fired → user authenticated", "receive");
+          }
+        }, 400);
+      }
+
+      let clientReady = true;
+      function simToggleReady(ready) {
+        clientReady = ready;
+        log(
+          `Client state: ${ready ? "✅ READY (buffer empty)" : "⛔ BUSY (connection congested)"}`,
+          "info",
+        );
+      }
+      function simVolatile() {
+        log(
+          `io.volatile.emit("cursor-pos", {x:${Math.floor(Math.random() * 800)},y:${Math.floor(Math.random() * 600)}})`,
+          "emit",
+        );
+        setTimeout(() => {
+          if (clientReady) log("✅ Delivered to client", "receive");
+          else
+            log(
+              "⛔ DROPPED — client not ready (volatile, no retry)",
+              "disconnect",
+            );
+        }, 200);
+      }
+      function simNormal() {
+        log(`io.emit("update", {data:"important"}) — normal event`, "emit");
+        setTimeout(
+          () =>
+            log(
+              "✅ Queued & delivered (even if client was busy — retried)",
+              "receive",
+            ),
+          200,
+        );
+      }
+
+      function simScaleEmit(withRedis) {
+        log(
+          withRedis ? "🔴 Redis connected on port 6379" : "❌ No Redis adapter",
+          "info",
+        );
+        log(
+          `Server 1: io.emit("news", {title:"Breaking!"})  → emitting`,
+          "emit",
+        );
+        setTimeout(() => {
+          log("✅ Client A (Server 1) received it", "receive");
+          if (withRedis) {
+            log("→ Message published to Redis channel", "info");
+            setTimeout(() => {
+              log("← Server 2 received from Redis", "info");
+              log("✅ Client B (Server 2) received it", "receive");
+            }, 300);
+          } else {
+            log(
+              "⛔ Client B (Server 2) NEVER received it — no Redis!",
+              "disconnect",
+            );
+          }
+        }, 300);
+      }
+
+      function addChatMsg(user, text, type = "other") {
+        const msgs = document.getElementById("chat-msgs");
+        if (!msgs) return;
+        const colors = {
+          Alice: "#00e5ff",
+          Bob: "#c792ea",
+          Charlie: "#10b981",
+          system: "#f59e0b",
+        };
+        const color = colors[user] || "#94a3b8";
+        const div = document.createElement("div");
+        div.style.cssText = "margin-bottom:4px";
+        const time = new Date().toLocaleTimeString("en", {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+        });
+        div.innerHTML = `<span style="color:${color}">${user}</span> <span style="color:#546e7a">${time}</span> <span style="color:#cdd9f5">${text}</span>`;
+        msgs.appendChild(div);
+        msgs.scrollTop = msgs.scrollHeight;
+      }
+      function simChatSend() {
+        const inp = document.getElementById("chat-input");
+        const text = inp.value.trim();
+        if (!text) return;
+        addChatMsg("You (Alice)", text, "me");
+        log(`socket.emit("message", "${text}")`, "emit");
+        log('→ Server received, io.emit("message") → all clients', "info");
+        log("← Acknowledgement: {delivered:true}", "receive");
+        inp.value = "";
+      }
+      function simBotMsg(user) {
+        const msgs = [
+          "Hey there! 😊",
+          "What's up?",
+          "Anyone here?",
+          "This Socket.io demo is cool!",
+          "Learning real-time stuff!",
+        ];
+        const text = msgs[Math.floor(Math.random() * msgs.length)];
+        addChatMsg(user, text);
+        log(
+          `← Server: socket.emit("message", {user:"${user}",text:"${text}"})`,
+          "receive",
+        );
+      }
+      function simUserLeave() {
+        log('← Server: io.emit("user-left", {name:"Bob"})', "disconnect");
+        log('← Server: io.emit("user-list", ["Alice","Charlie"])', "receive");
+        addChatMsg("System", "Bob left the chat 👋", "system");
+      }
+
+      // ─── INIT ────────────────────────────────────────────────────────────
+      renderAll();
+    </script>
+  </body>
+</html>
