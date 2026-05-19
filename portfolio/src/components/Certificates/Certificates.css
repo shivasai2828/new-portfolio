@@ -1,4 +1,5 @@
 .certificates-section {
+    position: relative;
     padding: 4rem 2rem;
     background-color: var(--color-bg);
     text-align: center;
@@ -80,4 +81,65 @@
     .certificates-grid {
         grid-template-columns: 1fr;
     }
+}
+
+/* ── Floating Tech Stack Icons ── */
+.certificates-floating-wrapper {
+  position: absolute;
+  z-index: 2;
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.float-react-cert {
+  top: 15%;
+  right: 5%;
+  width: 70px;
+  height: 70px;
+}
+.float-node-cert {
+  top: 40%;
+  left: 5%;
+  width: 65px;
+  height: 65px;
+}
+.float-next-cert {
+  top: 70%;
+  right: 5%;
+  width: 55px;
+  height: 55px;
+}
+.float-mongo-cert {
+  top: 85%;
+  left: 5%;
+  width: 50px;
+  height: 50px;
+}
+.float-js-cert {
+  top: 20%;
+  left: 5%;
+  width: 45px;
+  height: 45px;
+}
+
+.certificates-floating-img {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.1));
+}
+
+@media (max-width: 900px) {
+  .certificates-floating-wrapper {
+    opacity: 0.8 !important;
+  }
+  .float-react-cert { width: 50px; height: 50px; }
+  .float-node-cert { width: 45px; height: 45px; }
+  .float-next-cert { width: 40px; height: 40px; }
+  .float-mongo-cert { width: 35px; height: 35px; }
+  .float-js-cert { width: 35px; height: 35px; }
+}
+
+[data-theme="dark"] .certificates-floating-img {
+  filter: drop-shadow(0 8px 16px rgba(255, 255, 255, 0.05));
 }

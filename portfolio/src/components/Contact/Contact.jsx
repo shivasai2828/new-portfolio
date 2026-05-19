@@ -1,5 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./Contact.css";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Contact = () => {
   const LinkedInIcon = () => (
@@ -117,8 +121,93 @@ const Contact = () => {
     }
   };
 
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+      const mm = gsap.matchMedia();
+
+      mm.add("(min-width: 1px)", () => {
+          const wrappers = gsap.utils.toArray(".contact-floating-wrapper");
+
+          wrappers.forEach((wrapper, i) => {
+              gsap.set(wrapper, { opacity: 0 });
+
+              // Fade in naturally as we scroll into view
+              gsap.to(wrapper, {
+                  opacity: 1,
+                  duration: 1.2,
+                  scrollTrigger: {
+                      trigger: "#contact",
+                      start: "top 80%",
+                      toggleActions: "play none none reverse"
+                  }
+              });
+
+              // Alternating left/right fly-in with stylish rotation
+              const startPos = [
+                  { x: -0.8, y: -0.2, rot: -120 }, // Fly in from left
+                  { x: 0.8, y: -0.4, rot: 120 },   // Fly in from right
+                  { x: -0.8, y: 0.1, rot: -90 },   // Fly in from left
+                  { x: 0.8, y: 0.3, rot: 90 },     // Fly in from right
+                  { x: -0.8, y: -0.5, rot: -150 }, // Fly in from left
+              ];
+
+              gsap.fromTo(
+                  wrapper,
+                  {
+                      y: () => {
+                          const pos = startPos[i % startPos.length];
+                          return window.innerHeight * pos.y;
+                      },
+                      x: () => {
+                          const pos = startPos[i % startPos.length];
+                          return window.innerWidth * pos.x;
+                      },
+                      rotation: () => startPos[i % startPos.length].rot,
+                      scale: 0.1,
+                  },
+                  {
+                      y: 0,
+                      x: 0,
+                      rotation: 0,
+                      scale: 1,
+                      ease: "none",
+                      scrollTrigger: {
+                          trigger: "#contact",
+                          start: "top bottom",
+                          end: "center center",
+                          scrub: 1.2,
+                          invalidateOnRefresh: true,
+                      },
+                  }
+              );
+          });
+      });
+
+      return () => {
+          mm.revert();
+      };
+  }, []);
+
   return (
-    <section id="contact" className="contact-section">
+    <section id="contact" className="contact-section" ref={sectionRef}>
+      {/* Floating Icons Container */}
+      <div className="contact-floating-wrapper float-react-contact">
+        <img src="/react-icon.svg" alt="React" className="contact-floating-img idle-float" />
+      </div>
+      <div className="contact-floating-wrapper float-node-contact">
+        <img src="/nodejs-icon.svg" alt="Node.js" className="contact-floating-img idle-float" />
+      </div>
+      <div className="contact-floating-wrapper float-next-contact">
+        <img src="/next-icon.svg" alt="Next.js" className="contact-floating-img idle-float" />
+      </div>
+      <div className="contact-floating-wrapper float-mongo-contact">
+        <img src="/database-icon.svg" alt="MongoDB" className="contact-floating-img idle-float" />
+      </div>
+      <div className="contact-floating-wrapper float-js-contact">
+        <img src="/javascript-icon.svg" alt="JavaScript" className="contact-floating-img idle-float" />
+      </div>
+
       <div className="contact-container">
         <p className="section-subtitle">Get in Touch</p>
         <h2 className="section-title">Contact Me</h2>

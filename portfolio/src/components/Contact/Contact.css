@@ -1,4 +1,5 @@
 .contact-section {
+    position: relative;
     padding: 4rem 2rem;
     background-color: var(--color-bg);
     text-align: center;
@@ -224,4 +225,65 @@
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* ── Floating Tech Stack Icons ── */
+.contact-floating-wrapper {
+  position: absolute;
+  z-index: 2;
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.float-react-contact {
+  top: 15%;
+  right: 5%;
+  width: 70px;
+  height: 70px;
+}
+.float-node-contact {
+  top: 40%;
+  left: 5%;
+  width: 65px;
+  height: 65px;
+}
+.float-next-contact {
+  top: 70%;
+  right: 5%;
+  width: 55px;
+  height: 55px;
+}
+.float-mongo-contact {
+  top: 85%;
+  left: 5%;
+  width: 50px;
+  height: 50px;
+}
+.float-js-contact {
+  top: 20%;
+  left: 5%;
+  width: 45px;
+  height: 45px;
+}
+
+.contact-floating-img {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.1));
+}
+
+@media (max-width: 900px) {
+  .contact-floating-wrapper {
+    opacity: 0.8 !important;
+  }
+  .float-react-contact { width: 50px; height: 50px; }
+  .float-node-contact { width: 45px; height: 45px; }
+  .float-next-contact { width: 40px; height: 40px; }
+  .float-mongo-contact { width: 35px; height: 35px; }
+  .float-js-contact { width: 35px; height: 35px; }
+}
+
+[data-theme="dark"] .contact-floating-img {
+  filter: drop-shadow(0 8px 16px rgba(255, 255, 255, 0.05));
 }
