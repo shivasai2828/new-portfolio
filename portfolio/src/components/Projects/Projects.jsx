@@ -16,6 +16,15 @@ const Projects = () => {
 
   const projects = [
     {
+      id: 0,
+      title: "Agentic AI Chatbot SaaS",
+      image: null,
+      demoLink: "#",
+      repoLink: "https://github.com/shivasai2828/agentic-chatbot.git",
+      technologies: ["Next.js", "FastAPI", "LangChain", "LangGraph", "Pinecone", "PostgreSQL"],
+      description: "A complete multi-tenant Agentic AI Chatbot SaaS platform. It features advanced RAG pipelines for processing proprietary knowledge bases (PDF/DOCX/TXT), semantic search via Pinecone, and multi-agent AI tools using LangGraph for intent extraction and tool execution (Emails, CRMs, Tickets). It includes an embeddable public chat widget for customer websites, conversation memory, dashboard analytics (token/cost tracking), and a tiered SaaS billing architecture with strict data isolation.",
+    },
+    {
       id: 1,
       title: "WhatzCRM Multi-Tenant Platform",
       image: whatzcrn,
@@ -153,13 +162,23 @@ const Projects = () => {
         <div className="projects-grid" ref={gridRef}>
           {projects.map((project) => (
             <div key={project.id} className="project-card">
-              <div className="project-image-container">
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="project-image"
-                />
-              </div>
+              {project.image ? (
+                <div className="project-image-container">
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className="project-image"
+                  />
+                </div>
+              ) : (
+                <div className="project-image-container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #1e1b4b 0%, #4338ca 100%)' }}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"></path>
+                    <path d="M9 16v-2"></path>
+                    <path d="M15 16v-2"></path>
+                  </svg>
+                </div>
+              )}
               <div className="project-content">
                 <h3 className="project-title">{project.title}</h3>
                 <div className="project-tags">
