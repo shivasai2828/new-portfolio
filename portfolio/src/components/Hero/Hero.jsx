@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import "./Hero.css";
-import resume from "../../assets/ShivaSai-Full-Stack-Dev.pdf";
+import resume from "../../assets/shivasai_ai_full_stack.pdf";
 import profile from "../../assets/profile.webp";
 
 const roles = [
-  "Full-Stack Developer",
-  "React & React Native Specialist",
+  "Ai Full-Stack Developer",
   "MERN Stack Engineer",
+  "Agentic Ai Developer",
+  "React & React Native Specialist",
+  "GEN-Ai Developer",
+
 ];
 
 const Hero = () => {
@@ -49,7 +52,7 @@ const Hero = () => {
           <div className="hero-buttons">
             <a
               href={resume}
-              download="Boddu_Shivasai_Resume.pdf"
+              download="shivasai_ai_full_stack.pdf"
               className="btn btn-outline"
             >
               Download Resume

@@ -30,8 +30,8 @@ const traits = [
         <polyline points="8 6 2 12 8 18" />
       </svg>
     ),
-    title: "Full-Stack Dev",
-    desc: "Building end-to-end apps with React, Node.js, Express & MongoDB.",
+    title: "AI & Full-Stack Dev",
+    desc: "Building scalable apps with React, Next.js, Node.js, FastAPI & Agentic AI systems.",
   },
   {
     icon: (
@@ -50,8 +50,8 @@ const traits = [
         <polyline points="12 6 12 12 16 14" />
       </svg>
     ),
-    title: "Real-Time Systems",
-    desc: "Experienced in WebSockets & live data features for modern apps.",
+    title: "Agentic AI & RAG",
+    desc: "Designing multi-agent workflows, semantic search & LLM integrations with LangChain.",
   },
   {
     icon: (
@@ -69,8 +69,8 @@ const traits = [
         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
       </svg>
     ),
-    title: "Secure & Scalable",
-    desc: "JWT auth, role-based access, performance optimization & safe APIs.",
+    title: "Vector Databases",
+    desc: "Experience with Pinecone, ChromaDB, and hybrid search for accurate LLM context.",
   },
   {
     icon: (
@@ -89,8 +89,8 @@ const traits = [
         <path d="M3 9h18M9 21V9" />
       </svg>
     ),
-    title: "UI / UX Focus",
-    desc: "Crafting clean, intuitive interfaces that users love to interact with.",
+    title: "Secure SaaS Platforms",
+    desc: "Developing multi-tenant platforms with real-time Socket.IO features and optimized performance.",
   },
 ];
 
@@ -253,24 +253,23 @@ const About = () => {
           {/* Left – bio */}
           <div className="about-bio about-animate">
             <p className="about-bio-text">
-              I'm a{" "}
+              I'm an{" "}
               <strong className="text-primary">
-                Full-Stack MERN Developer with 1.8+ years{" "}
+                AI Full-Stack Developer with 1.8+ years{" "}
               </strong>{" "}
-              of experience building scalable SaaS platforms, real-time
-              applications, and performance-driven web products used by
-              thousands of users. I specialize in modern React architectures,
-              secure Node.js backends, and low-latency real-time systems with
-              Socket.IO, focusing on fast and production-ready user
-              experiences.{" "}
+              of experience building production-grade SaaS applications, Agentic AI systems,
+              and Retrieval-Augmented Generation (RAG) solutions. I specialize in
+              designing multi-agent workflows, semantic search systems, and scalable
+              AI-powered applications that solve real-world problems.
             </p>
             <p className="about-bio-text">
-              I enjoy working across the entire stack — from pixel-perfect
-              animated frontends to optimized APIs and databases. My core
-              toolkit includes React, Node.js, Express, and MongoDB, along with
-              performance techniques like code splitting, caching, and lazy
-              loading. Currently, I'm expanding into React Native to bring the
-              same performance-focused approach to mobile development.
+              I enjoy working across the entire stack — from real-time AI UIs in React and Next.js
+              to optimized APIs with FastAPI and Node.js. My core toolkit includes
+              LangChain, LangGraph, Pinecone, OpenAI, and MongoDB. I focus on optimizing vector
+              search, reducing LLM hallucinations, and delivering fast, production-ready user experiences.
+            </p>
+            <p className="about-bio-text">
+              Additionally, I have strong hands-on experience as a <strong className="text-primary">MERN Stack and Frontend Developer</strong>, building robust web applications using MongoDB, Express.js, React.js, Next.js, and Node.js.
             </p>
 
             {/* Stats row */}

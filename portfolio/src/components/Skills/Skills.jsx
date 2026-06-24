@@ -33,6 +33,20 @@ const Skills = () => {
       ],
     },
     {
+      category: "AI & Gen AI",
+      titleIcon: "🤖",
+      subtitle: "Building agentic AI and RAG pipelines",
+      skills: [
+        { name: "LangChain", icon: "🦜" },
+        { name: "LangGraph", icon: "🕸️" },
+        { name: "Agentic AI", icon: "🧠" },
+        { name: "RAG", icon: "📚" },
+        { name: "Pinecone", icon: "🌲" },
+        { name: "OpenAI", icon: "🌌" },
+        { name: "Prompt Engineering", icon: "✍️" },
+      ],
+    },
+    {
       category: "Backend",
       titleIcon: "⚙️",
       subtitle: "Architecting scalable and secure APIs",

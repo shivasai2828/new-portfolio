@@ -22,7 +22,7 @@ const Projects = () => {
       demoLink: "https://www.whatzcrm.com",
       repoLink: "#",
       technologies: ["React", "Node.js", "MongoDB", "Socket.IO", "Express", "Tailwind CSS"],
-      description: "A comprehensive multi-tenant CRM solution tailored for businesses to manage their WhatsApp communications efficiently. It offers powerful automation, real-time analytics, and role-based access control, allowing multiple departments or clients to operate within isolated environments securely.",
+      description: "A comprehensive multi-tenant SaaS CRM platform. It integrates directly with the official WhatsApp Business API (similar to Wati) for template creation, marketing campaigns, and real-time chatting. Key features include a shared Team Inbox, contact and agent management, and complete CRM tools for tracking leads, deals, and sales pipelines. It supports role-based access: Agents interact directly with customers, while Admins monitor all activities and analytics.",
     },
     {
       id: 2,
@@ -30,17 +30,17 @@ const Projects = () => {
       image: rhino,
       demoLink: "https://www.rhinoagents.com",
       repoLink: "#",
-      technologies: ["React", "Automations", "Node.js", "Python", "OpenAI API"],
-      description: "An advanced automation platform designed to streamline repetitive workflows. Using cutting-edge web technologies, it allows users to build intelligent agents that handle tedious administrative tasks, freeing up valuable time for more strategic initiatives.",
+      technologies: ["React.js", "FastAPI", "LangChain", "LangGraph", "RAG Pipelines", "Agentic AI", "Python"],
+      description: "An advanced no-code Agentic AI workflow builder (similar to n8n) that converts natural language instructions into executable automations. Powered by a robust FastAPI backend, it utilizes LangChain and LangGraph to orchestrate complex multi-agent systems. These intelligent agents perform intent extraction, seamless API integration discovery, and dynamic workflow generation using advanced RAG pipelines across 100+ integrations (Gmail, Slack, WhatsApp, OpenAI, Google Sheets). Users can visually build, test, and execute AI-driven automation pipelines to streamline tedious administrative tasks.",
     },
     {
       id: 3,
-      title: "Hostel Management System",
+      title: "HashanAgent - AI Customer Support SaaS",
       image: pgimage,
       demoLink: "#",
       repoLink: "#",
-      technologies: ["Node.js", "Express", "MongoDB", "React", "JWT", "Redux"],
-      description: "A robust backend system built to manage daily operations of hostels and paying guest accommodations. Features include tenant onboarding, automated rent collection tracking, room allocation, and maintenance request logging, entirely powered by a scalable Node.js architecture.",
+      technologies: ["React.js", "FastAPI", "LangChain", "Pinecone", "ChromaDB", "AWS EC2", "Docker"],
+      description: "An end-to-end AI platform allowing businesses to train custom customer support agents on their proprietary data (PDFs, Web Scraping). It features an advanced Agentic RAG pipeline using FastAPI, LangChain, Pinecone, and ChromaDB for semantic and hybrid search. The system integrates OpenAI and Google Gemini APIs to answer customer queries with high precision, significantly reducing hallucinations. The platform includes an embeddable React.js chatbot widget and is fully deployed using Docker, Nginx, and AWS EC2.",
     },
     {
       id: 4,
@@ -207,9 +207,7 @@ const Projects = () => {
             <button className="modal-close-btn" onClick={() => setSelectedProject(null)}>
               &times;
             </button>
-            <div className="modal-header">
-              <img src={selectedProject.image} alt={selectedProject.title} className="modal-image" />
-            </div>
+
             <div className="modal-body">
               <h2 className="modal-title">{selectedProject.title}</h2>
               <div className="modal-tags">

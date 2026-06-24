@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import emailjs from '@emailjs/browser';
 import "./Contact.css";
-
 gsap.registerPlugin(ScrollTrigger);
 
 const Contact = () => {
@@ -71,7 +71,7 @@ const Contact = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!formData.name || !formData.email || !formData.message) {
@@ -81,44 +81,35 @@ const Contact = () => {
 
     setStatus("loading");
 
-    try {
-      const response = await fetch("http://localhost:5001/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setStatus("success");
-        setResponseMsg(data.message || "Email sent successfully!");
-        setFormData({ name: "", email: "", subject: "", message: "" });
-        setTimeout(() => {
-          setStatus("idle");
-          setResponseMsg("");
-        }, 5000);
-      } else {
-        setStatus("error");
-        setResponseMsg(
-          data.message || "Failed to send email. Please try again.",
-        );
-        setTimeout(() => {
-          setStatus("idle");
-          setResponseMsg("");
-        }, 5000);
-      }
-    } catch (error) {
-      console.error("Submission error:", error);
-      setStatus("error");
-      setResponseMsg("Network error. Is the server running?");
+    emailjs.send(
+      'service_1smckaj',      // e.g. service_abc123
+      'template_2tx6x9n',     // e.g. template_xyz789
+      {
+        from_name: formData.name,
+        from_email: formData.email,
+        subject: formData.subject,
+        message: formData.message,
+      },
+      'ZKGzzLwwG5jp002E1'       // e.g. abcdef123456
+    )
+    .then(() => {
+      setStatus("success");
+      setResponseMsg("Message sent successfully!");
+      setFormData({ name: "", email: "", subject: "", message: "" });
       setTimeout(() => {
         setStatus("idle");
         setResponseMsg("");
       }, 5000);
-    }
+    })
+    .catch((error) => {
+      console.error("Failed...", error);
+      setStatus("error");
+      setResponseMsg("Failed to send message. Please try again.");
+      setTimeout(() => {
+        setStatus("idle");
+        setResponseMsg("");
+      }, 5000);
+    });
   };
 
   const sectionRef = useRef(null);
@@ -216,12 +207,12 @@ const Contact = () => {
           <div className="contact-left">
             <h3 className="contact-heading">Let's Connect</h3>
             <p className="contact-desc">
-              Full-Stack MERN Developer with 1.3 years of professional
-              experience building scalable SaaS platforms, real-time systems,
-              and performance-optimized web apps used by thousands of users.
-              Strong expertise in React architecture, Node.js backend design,
-              and real-time Socket.IO applications. Currently expanding into
-              React Native mobile development.
+              AI Full-Stack Developer with 1.8+ years of professional
+              experience building production-grade SaaS applications, Agentic AI systems,
+              and Retrieval-Augmented Generation (RAG) solutions. Strong expertise
+              in orchestrating multi-agent workflows with LangChain, building scalable
+              APIs with FastAPI and Node.js, and crafting dynamic UIs with React.js.
+              Let's build something amazing together!
             </p>
             <div className="social-connect-icons">
               <a
