@@ -207,7 +207,7 @@ const Contact = () => {
           <div className="contact-left">
             <h3 className="contact-heading">Let's Connect</h3>
             <p className="contact-desc">
-              AI Full-Stack Developer with 1.8+ years of professional
+              AI Full-Stack Developer with 2+ years of professional
               experience building production-grade SaaS applications, Agentic AI systems,
               and Retrieval-Augmented Generation (RAG) solutions. Strong expertise
               in orchestrating multi-agent workflows with LangChain, building scalable

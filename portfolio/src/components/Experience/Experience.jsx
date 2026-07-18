@@ -8,22 +8,18 @@ gsap.registerPlugin(ScrollTrigger);
 const Experience = () => {
     const experiences = [
         {
-            company: 'Marketeer Media',
-            role: 'Full Stack Developer',
-            date: 'Jan 2025 - Present',
+            company: 'Markteer Media',
+            role: 'AI Full Stack Developer',
+            date: 'March 2024 – April 2026',
+            location: 'Madhapur, Hyderabad',
             side: 'left'
-        },
-        {
-            company: 'Tridizi',
-            role: 'Frontend Intern',
-            date: 'Aug 2024 - Nov 2024',
-            side: 'right'
         },
         {
             company: 'NxtWave Institute',
             role: 'MERN Stack Program',
             date: 'Jul 2023 – Jun 2024',
-            side: 'left'
+            location: '',
+            side: 'right'
         }
     ];
 
@@ -131,6 +127,9 @@ const Experience = () => {
                                 <h3 className="company-name">{exp.company}</h3>
                                 <h4 className="role-title">{exp.role}</h4>
                                 <span className="experience-date">{exp.date}</span>
+                                {exp.location && (
+                                    <span className="experience-location">📍 {exp.location}</span>
+                                )}
                             </div>
                         </div>
                     ))}

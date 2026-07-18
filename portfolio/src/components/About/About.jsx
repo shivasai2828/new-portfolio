@@ -6,7 +6,7 @@ import "./About.css";
 gsap.registerPlugin(ScrollTrigger);
 
 const stats = [
-  { value: "1.8+", label: "Years Experience" },
+  { value: "2+", label: "Years Experience" },
   { value: "12+", label: "Projects Built" },
   { value: "10+", label: "Technologies" },
   { value: "100%", label: "Dedication" },
@@ -255,7 +255,7 @@ const About = () => {
             <p className="about-bio-text">
               I'm an{" "}
               <strong className="text-primary">
-                AI Full-Stack Developer with 1.8+ years{" "}
+                AI Full-Stack Developer with 2+ years{" "}
               </strong>{" "}
               of experience building production-grade SaaS applications, Agentic AI systems,
               and Retrieval-Augmented Generation (RAG) solutions. I specialize in
