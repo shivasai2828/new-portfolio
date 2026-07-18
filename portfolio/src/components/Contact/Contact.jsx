@@ -205,7 +205,7 @@ const Contact = () => {
 
         <div className="contact-content">
           <div className="contact-left">
-            <h3 className="contact-heading">Let's Connect</h3>
+            <h3 className="contact-heading">Let's <span>Connect</span></h3>
             <p className="contact-desc">
               AI Full-Stack Developer with 2+ years of professional
               experience building production-grade SaaS applications, Agentic AI systems,
